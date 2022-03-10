@@ -1,0 +1,70 @@
+{
+  "size": 3,
+  "data": [
+    {
+      "id": 1,
+      "name": "123",
+      "coordinates": {
+        "x": 123,
+        "y": 123.0
+      },
+      "creationDate": "Mar 10, 2022 10:26:43 AM",
+      "area": 123,
+      "population": 123,
+      "metersAboveSeaLevel": 123.0,
+      "timezone": 12,
+      "agglomeration": 123,
+      "climate": "OCEANIC",
+      "governor": null
+    },
+    {
+      "id": 2,
+      "name": "312",
+      "coordinates": {
+        "x": 321,
+        "y": 312.0
+      },
+      "creationDate": "Mar 10, 2022 10:27:44 AM",
+      "area": 31,
+      "population": 312,
+      "metersAboveSeaLevel": 31.0,
+      "timezone": 12,
+      "agglomeration": 12,
+      "climate": "OCEANIC",
+      "governor": null
+    },
+    {
+      "id": 3,
+      "name": "3",
+      "coordinates": {
+        "x": 3,
+        "y": 3.0
+      },
+      "creationDate": "Mar 10, 2022 10:28:18 AM",
+      "area": 3,
+      "population": 3,
+      "metersAboveSeaLevel": 3.0,
+      "timezone": 3,
+      "agglomeration": 3,
+      "climate": "OCEANIC",
+      "governor": {
+        "name": "3",
+        "age": 3,
+        "birthday": {
+          "date": {
+            "year": 2003,
+            "month": 8,
+            "day": 12
+          },
+          "time": {
+            "hour": 12,
+            "minute": 12,
+            "second": 12,
+            "nano": 0
+          }
+        }
+      }
+    }
+  ],
+  "collectionClass": "public class java.util.TreeSet\u003cE\u003e"
+}
