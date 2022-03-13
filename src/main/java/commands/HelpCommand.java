@@ -20,6 +20,6 @@ public class HelpCommand extends AbstractCmd implements Command{
              commandManager.getCommands()) {
             System.out.println(command.getBigInfo());
         }
-    };
+    }
 
 }

@@ -19,5 +19,5 @@ public class AddCommand extends AbstractCmd{
     public void run(){
         CollectionManager.getInstance().addElement( (City) args.get(0));
         System.out.println("Insert 1 row");
-    };
+    }
 }

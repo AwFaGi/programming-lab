@@ -1,11 +1,11 @@
 package commands;
 
-import exceptions.UnsatisfiedArgumentsException;
+//import exceptions.UnsatisfiedArgumentsException;
 
 public interface Command {
-    void execute() throws UnsatisfiedArgumentsException;
+    void execute();
     void run();
     void sendArg(Object arg);
-    void checkArgs() throws UnsatisfiedArgumentsException;
+//    void checkArgs() throws UnsatisfiedArgumentsException;
     void clearArgs();
 }

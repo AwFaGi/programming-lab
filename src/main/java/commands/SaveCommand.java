@@ -17,6 +17,5 @@ public class SaveCommand extends AbstractCmd{
     @Override
     public void run(){
         CollectionManager.getInstance().toJSON();
-
-    };
+    }
 }

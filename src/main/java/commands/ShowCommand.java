@@ -17,5 +17,5 @@ public class ShowCommand extends AbstractCmd{
     @Override
     public void run(){
         CollectionManager.getInstance().showByIdOrder();
-    };
+    }
 }

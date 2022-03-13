@@ -21,5 +21,5 @@ public class InfoCommand extends AbstractCmd{
         } catch (NoSuchFieldException e){
             System.err.println("There's an issue. Please contact me.");
         }
-    };
+    }
 }

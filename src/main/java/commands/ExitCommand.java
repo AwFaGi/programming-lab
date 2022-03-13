@@ -17,5 +17,5 @@ public class ExitCommand extends AbstractCmd{
     public void run(){
         // TODO: 08.03.2022 check unsaved changes and ask if need to save
         System.exit(0);
-    };
+    }
 }

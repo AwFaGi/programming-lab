@@ -17,5 +17,5 @@ public class ClearCommand extends AbstractCmd{
     @Override
     public void run(){
         CollectionManager.getInstance().clearCollection();
-    };
+    }
 }

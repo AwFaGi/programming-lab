@@ -17,5 +17,5 @@ public class PrintAscendingCommand extends AbstractCmd{
     @Override
     public void run(){
         CollectionManager.getInstance().showAscending();
-    };
+    }
 }
