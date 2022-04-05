@@ -37,13 +37,17 @@ public class InputProcessor {
     }
 
     public static City inputCity(){
+        //todo rewrite using validator
         City city = new City();
         CollectionManager cm = CollectionManager.getInstance();
 
-        city.setId(cm.getSize() + 1);
+        //TODO change id generation (breaks on remove)?
+        city.setId(cm.generateID());
+        city.setCreationDate(new Date());
+
         city.setName(inputString("Enter name (String, not null)", false));
         city.setCoordinates(inputCoordinates());
-        city.setCreationDate(new Date());
+
         city.setArea(inputInt("Enter area (int, >0)", 0));
         city.setPopulation(inputLong("Enter population (Long, not null, >0)", false, 0L));
         city.setMetersAboveSeaLevel(
@@ -56,6 +60,7 @@ public class InputProcessor {
 
         return city;
     }
+
 
     public static Coordinates inputCoordinates(){
         Coordinates coordinates = new Coordinates();
@@ -99,6 +104,10 @@ public class InputProcessor {
                 System.out.print(INPUT_PREFIX);
                 try {
                     String value = scanner.nextLine();
+                    // TODO: 05.04.2022 check ability of work
+                    if (value.isEmpty()){
+                        return null;
+                    }
                     return LocalDateTime.parse(value, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
                 } catch (IllegalArgumentException | DateTimeParseException e){
                     throw new UnacceptableUserInputException("datetime in defined format");
@@ -297,10 +306,11 @@ public class InputProcessor {
             System.out.print(INPUT_PREFIX);
             try {
                 value = scanner.nextLine().toUpperCase();
+                if (value.isEmpty()) return null;
                 try {
                      return Climate.valueOf(value);
                 } catch (IllegalArgumentException e) {
-                    throw new UnacceptableUserInputException("one of Climate values");
+                    throw new UnacceptableUserInputException("one of Climate values or null");
                 }
             } catch (UnacceptableUserInputException e){
                 System.err.println(e.getMessage());

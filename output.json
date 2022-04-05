@@ -1,70 +1,64 @@
 {
-  "size": 3,
+  "size": 1,
   "data": [
     {
       "id": 1,
-      "name": "123",
+      "name": "privet",
       "coordinates": {
         "x": 123,
         "y": 123.0
       },
-      "creationDate": "Mar 10, 2022 10:26:43 AM",
+      "creationDate": "05.04.2022 12:20:41",
       "area": 123,
       "population": 123,
-      "metersAboveSeaLevel": 123.0,
+      "metersAboveSeaLevel": 123123.0,
       "timezone": 12,
-      "agglomeration": 123,
-      "climate": "OCEANIC",
-      "governor": null
-    },
-    {
-      "id": 2,
-      "name": "312",
-      "coordinates": {
-        "x": 321,
-        "y": 312.0
-      },
-      "creationDate": "Mar 10, 2022 10:27:44 AM",
-      "area": 31,
-      "population": 312,
-      "metersAboveSeaLevel": 31.0,
-      "timezone": 12,
-      "agglomeration": 12,
-      "climate": "OCEANIC",
+      "agglomeration": 12312,
+      "climate": null,
       "governor": null
     },
     {
       "id": 3,
-      "name": "3",
+      "name": "poka",
       "coordinates": {
-        "x": 3,
-        "y": 3.0
+        "x": 345,
+        "y": 65.235
       },
-      "creationDate": "Mar 10, 2022 10:28:18 AM",
-      "area": 3,
-      "population": 3,
-      "metersAboveSeaLevel": 3.0,
-      "timezone": 3,
-      "agglomeration": 3,
+      "creationDate": "05.04.2022 12:20:41",
+      "area": 123,
+      "population": 123,
+      "metersAboveSeaLevel": 123123.0,
+      "timezone": 12,
+      "agglomeration": 12312,
       "climate": "OCEANIC",
       "governor": {
-        "name": "3",
-        "age": 3,
-        "birthday": {
-          "date": {
-            "year": 2003,
-            "month": 8,
-            "day": 12
-          },
-          "time": {
-            "hour": 12,
-            "minute": 12,
-            "second": 12,
-            "nano": 0
-          }
-        }
+        "name": "vasya",
+        "age": 123,
+        "birthday": "11.11.1111 11:11:11"
+      }
+    },
+    {
+      "id": 2,
+      "name": "votetogorod",
+      "coordinates": {
+        "x": 345,
+        "y": 65.235
+      },
+      "creationDate": "04.07.2022 12:55:41",
+      "area": 521,
+      "population": 215346536,
+      "metersAboveSeaLevel": 123.73,
+      "timezone": -3,
+      "agglomeration": 12312,
+      "climate": "TROPICAL_SAVANNA",
+      "governor": {
+        "name": "kolan",
+        "age": 666,
+        "birthday": "22.02.2022 22:22:22"
       }
     }
   ],
+  "lastEditDate": "05.04.2022 12:21:02",
+  "creationDate": "05.04.2022 12:20:25",
   "collectionClass": "public class java.util.TreeSet\u003cE\u003e"
 }

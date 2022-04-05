@@ -1,7 +1,10 @@
 package commands;
 
+import storaged.City;
 import utils.CollectionManager;
 import utils.CommandManager;
+
+import java.util.TreeSet;
 
 public class ShowCommand extends AbstractCmd{
     public ShowCommand(CommandManager commandManager){
@@ -16,6 +19,8 @@ public class ShowCommand extends AbstractCmd{
 
     @Override
     public void run(){
-        CollectionManager.getInstance().showByIdOrder();
+//        CollectionManager.getInstance().showByIdOrder();
+        TreeSet<City> collection = CollectionManager.getInstance().getCollection();
+        collection.forEach(System.out::println);
     }
 }

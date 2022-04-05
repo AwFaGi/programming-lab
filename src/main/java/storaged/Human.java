@@ -1,6 +1,9 @@
 package storaged;
 
+import utils.Validator;
+
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Human {
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -36,7 +39,7 @@ public class Human {
         return "Human{" +
                 "name='" + name + '\'' +
                 ", age=" + age +
-                ", birthday=" + birthday +
+                ", birthday=" + birthday.format(Validator.dtFormatter) +
                 '}';
     }
 }

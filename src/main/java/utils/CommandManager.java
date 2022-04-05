@@ -6,6 +6,7 @@ import java.util.*;
 
 import exceptions.NoSuchCommandException;
 import exceptions.UnsatisfiedArgumentsException;
+import exceptions.WhileRunCommandException;
 
 public class CommandManager {
     private Map<String, AbstractCmd> availableCommands = new LinkedHashMap<>();
@@ -46,7 +47,7 @@ public class CommandManager {
 
             currentCommand.execute();
 
-        } catch (NoSuchCommandException | UnsatisfiedArgumentsException e) {
+        } catch (NoSuchCommandException | UnsatisfiedArgumentsException | WhileRunCommandException e) {
             System.err.println(e.getMessage());
         }
     }

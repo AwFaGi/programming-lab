@@ -16,10 +16,6 @@ public class InfoCommand extends AbstractCmd{
 
     @Override
     public void run(){
-        try {
-            CollectionManager.getInstance().printInfo();
-        } catch (NoSuchFieldException e){
-            System.err.println("There's an issue. Please contact me.");
-        }
+        System.out.println(CollectionManager.getInstance().getInfo());
     }
 }

@@ -1,5 +1,8 @@
 package storaged;
 
+import utils.Validator;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class City implements Comparable<City>{
@@ -110,11 +113,12 @@ public class City implements Comparable<City>{
 
     @Override
     public String toString() {
+
         return "City{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + name + "'" +
                 ", coordinates=" + coordinates +
-                ", creationDate=(" + creationDate + ")" +
+                ", creationDate=(" + Validator.sdFormatter.format(creationDate) + ")" +
                 ", area=" + area +
                 ", population=" + population +
                 ", metersAboveSeaLevel=" + metersAboveSeaLevel +

@@ -1,6 +1,7 @@
 package commands;
 
 import exceptions.UnsatisfiedArgumentsException;
+import exceptions.WhileRunCommandException;
 import storaged.City;
 import utils.CommandManager;
 
@@ -23,9 +24,19 @@ public abstract class AbstractCmd implements Command{
     }
 
     @Override
-    public void execute(){
-        run();
-        clearArgs();
+    public void execute() throws WhileRunCommandException, UnsatisfiedArgumentsException {
+        if (args.size() != requirements.length){
+            clearArgs();
+            String message = requirements.length > 0? Arrays.toString(getRequirements()): "no arguments";
+            throw new UnsatisfiedArgumentsException(message);
+        }
+        try {
+            run();
+            clearArgs();
+        } catch (WhileRunCommandException e) {
+            clearArgs();
+            throw e;
+        }
 
     }
 //    @Deprecated

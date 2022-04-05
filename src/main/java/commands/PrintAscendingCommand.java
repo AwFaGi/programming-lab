@@ -1,7 +1,11 @@
 package commands;
 
+import storaged.City;
 import utils.CollectionManager;
 import utils.CommandManager;
+
+import java.util.Comparator;
+import java.util.TreeSet;
 
 public class PrintAscendingCommand extends AbstractCmd{
     public PrintAscendingCommand(CommandManager commandManager){
@@ -16,6 +20,10 @@ public class PrintAscendingCommand extends AbstractCmd{
 
     @Override
     public void run(){
-        CollectionManager.getInstance().showAscending();
+//        CollectionManager.getInstance().showAscending();
+        TreeSet<City> collection = CollectionManager.getInstance().getCollection();
+        collection.stream().sorted(
+                Comparator.comparing(City::getPopulation).thenComparing(City::getArea)
+        ).forEach(System.out::println);
     }
 }
