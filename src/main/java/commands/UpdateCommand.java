@@ -1,29 +1,30 @@
 package commands;
 
 import exceptions.WhileRunCommandException;
+import stored.City;
 import utils.CollectionManager;
 import utils.CommandManager;
 
 import java.util.List;
 
 /**
- * remove all elements by provided id
+ * update element in collection by given id
  */
-public class RemoveByIdCommand extends AbstractCmd{
-    public RemoveByIdCommand(CommandManager commandManager){
+public class UpdateCommand extends AbstractCmd{
+    public UpdateCommand(CommandManager commandManager){
         super(
-                "remove_by_id",
-                "remove_by_id id",
-                "removes element by provided id",
-                new String[]{"int"}
+                "update",
+                "update id {element}",
+                "update element with given id, filling fields using newline",
+                new String[]{"int", "stored.City"}
         );
         this.commandManager = commandManager;
     }
 
     @Override
     public void run(){
-
         int id = Integer.parseInt( (String) args.get(0));
+        City elem = (City) args.get(1);
 
         List<Integer> ids = CollectionManager.getInstance().getAllID();
 
@@ -31,8 +32,8 @@ public class RemoveByIdCommand extends AbstractCmd{
             throw new WhileRunCommandException(getName(), "invalid ID");
         }
 
-        CollectionManager.getInstance().removeId(id);
-        System.out.println(String.format("Rows removed: 1"));
+        CollectionManager.getInstance().updateElement(id, elem);
+        System.out.println("Updated");
 
     }
 }

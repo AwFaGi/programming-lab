@@ -1,11 +1,14 @@
 package utils;
 
-import storaged.Climate;
+import stored.Climate;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+/**
+ * validator of fields in city
+ */
 public class Validator {
     final static int MIN_ID = 0;
     final static float MAX_Y = 960;

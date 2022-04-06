@@ -2,7 +2,10 @@ package commands;
 
 import utils.CommandManager;
 
-public class HelpCommand extends AbstractCmd implements Command{
+/**
+ * print information about all available commands
+ */
+public class HelpCommand extends AbstractCmd{
 
     public HelpCommand(CommandManager commandManager){
         super(
@@ -19,6 +22,7 @@ public class HelpCommand extends AbstractCmd implements Command{
         for (AbstractCmd command:
              commandManager.getCommands()) {
             System.out.println(command.getBigInfo());
+            System.out.println();
         }
     }
 

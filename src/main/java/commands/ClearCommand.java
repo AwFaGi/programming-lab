@@ -3,6 +3,9 @@ package commands;
 import utils.CollectionManager;
 import utils.CommandManager;
 
+/**
+ * Remove all elements
+ */
 public class ClearCommand extends AbstractCmd{
     public ClearCommand(CommandManager commandManager){
         super(

@@ -1,16 +1,19 @@
 package commands;
 
-import storaged.City;
+import stored.City;
 import utils.CollectionManager;
 import utils.CommandManager;
 
+/**
+ * Class for command 'add' (add element to the collection)
+ */
 public class AddCommand extends AbstractCmd{
     public AddCommand(CommandManager commandManager){
         super(
                 "add",
                 "add {element}",
                 "add element to the collection, filling fields using newline",
-                new String[]{"storaged.City"}
+                new String[]{"stored.City"}
         );
         this.commandManager = commandManager;
     }

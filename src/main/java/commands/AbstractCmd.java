@@ -2,12 +2,15 @@ package commands;
 
 import exceptions.UnsatisfiedArgumentsException;
 import exceptions.WhileRunCommandException;
-import storaged.City;
+import stored.City;
 import utils.CommandManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Mother class for all commands
+ */
 public abstract class AbstractCmd implements Command{
     private final String name;
     private final String usage;
@@ -16,6 +19,13 @@ public abstract class AbstractCmd implements Command{
     protected CommandManager commandManager;
     protected ArrayList<Object> args = new ArrayList<>();
 
+    /**
+     * Constructor
+     * @param name name of command
+     * @param usage requirements order
+     * @param description about what command does
+     * @param requirements data must have
+     */
     public AbstractCmd(String name, String usage, String description, String[] requirements){
         this.name = name;
         this.usage = usage;
@@ -23,6 +33,11 @@ public abstract class AbstractCmd implements Command{
         this.requirements = requirements;
     }
 
+    /**
+     * Makes pre-actions and starts main body (run())
+     * @throws WhileRunCommandException values of arguments are not good
+     * @throws UnsatisfiedArgumentsException types of given and required arguments don't match
+     */
     @Override
     public void execute() throws WhileRunCommandException, UnsatisfiedArgumentsException {
         if (args.size() != requirements.length){
@@ -39,24 +54,13 @@ public abstract class AbstractCmd implements Command{
         }
 
     }
-//    @Deprecated
-//    @Override
-//    public void sendArg(Object arg){
-//        args.add(arg);
-//        if (arg instanceof String){
-//            String stringArg = (String) arg;
-//            if (stringArg.isEmpty()) return;
-//            args.addAll(
-//                    Arrays.asList(
-//                            stringArg.split(" ")
-//                    )
-//            );
-//        } else {
-//            args.add(arg);
-//        }
 
-//    };
 
+    /**
+     * gets arg and checks its type
+     * @param arg argument given by user / script
+     * @throws UnsatisfiedArgumentsException if argument is bad
+     */
     @Override
     public void sendArg(Object arg) throws UnsatisfiedArgumentsException{
         int currentArgument = args.size();
@@ -64,6 +68,7 @@ public abstract class AbstractCmd implements Command{
             String message = requirements.length > 0? Arrays.toString(getRequirements()): "no arguments";
             throw new UnsatisfiedArgumentsException(message);
         }
+        // TODO: 05.04.2022 rewrite using Obj.class instead of String
         try {
             switch (requirements[currentArgument]){
                 case "int":
@@ -78,7 +83,7 @@ public abstract class AbstractCmd implements Command{
                 case "double":
                     Double.parseDouble( (String) arg);
                     break;
-                case "storaged.City":
+                case "stored.City":
                     City test = (City) arg;
                     break;
                 default:
@@ -92,6 +97,11 @@ public abstract class AbstractCmd implements Command{
         args.add(arg);
     }
 
+    /**
+     * count number of arguments with given class name
+     * @param className class name to count number
+     * @return number of arguments
+     */
     public int countNeedArgType(String className){
         return (int) Arrays.stream(requirements).filter(o -> o.equals(className)).count();
     }
@@ -100,6 +110,9 @@ public abstract class AbstractCmd implements Command{
         return requirements;
     }
 
+    /**
+     * clears previously added arguments
+     */
     @Override
     public void clearArgs(){
         args.clear();
@@ -128,7 +141,7 @@ public abstract class AbstractCmd implements Command{
 //                    case "double":
 //                        Double.parseDouble( (String) args.get(i));
 //                        break;
-//                    case "storaged.City":
+//                    case "stored.City":
 //                        City test = (City) args.get(i);
 //                        break;
 //                    default:
@@ -158,6 +171,10 @@ public abstract class AbstractCmd implements Command{
         return requirements.length > 0;
     }
 
+    /**
+     *
+     * @return information that is printed in 'help' command
+     */
     public String getBigInfo(){
         return getName() + "\n\t" +
                 "Usage: " + getUsage() + "\n\t" +

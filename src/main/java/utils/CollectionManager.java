@@ -2,26 +2,26 @@ package utils;
 
 import com.google.gson.*;
 import exceptions.BreachOfCollectionIntegrityException;
-import exceptions.ReadWriteException;
-import exceptions.WhileRunCommandException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import storaged.City;
-import storaged.Climate;
-import storaged.Coordinates;
-import storaged.Human;
+import stored.City;
+import stored.Climate;
+import stored.Coordinates;
+import stored.Human;
 
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * class for work with collection
+ */
 public class CollectionManager {
     private static final CollectionManager INSTANCE = new CollectionManager();
 
@@ -31,34 +31,42 @@ public class CollectionManager {
     private LocalDateTime date = LocalDateTime.now();
     private String collectionName;
 
+    /**
+     * attach collection to current working session
+     * @param filename file with collection
+     */
     public void attachFile(String filename){
         collectionName = filename;
     }
 
-    private CollectionManager() {
-
-    }
+    private CollectionManager() {}
 
     public static CollectionManager getInstance() {
         return INSTANCE;
     }
 
+    /**
+     * generate id for new elements
+     * @return id
+     */
     public int generateID(){
         if (collection.size() > 0) {
             City elem = collection.last();
             return elem.getId() + 1;
-        }else { return 1; }
+        } else { return 1; }
     }
 
-    // TODO: 09.03.2022 проверка на отсутствие элемента
-    public void updateElement(int id){
-        
-    }
-
+    /**
+     * add element to collection
+     * @param city element to be added
+     */
     public void addElement(City city){
         collection.add(city);
     }
 
+    /**
+     * print info to System.out
+     */
     @Deprecated
     public void printInfo(){
         try {
@@ -75,6 +83,10 @@ public class CollectionManager {
         }
     }
 
+    /**
+     * get info about collection (stored class, collection type, creation date, size)
+     * @return info about collection
+     */
     public String getInfo(){
         try {
             Field stringListField = CollectionManager.class.getDeclaredField("collection");
@@ -91,21 +103,41 @@ public class CollectionManager {
         }
     }
 
+    /**
+     * remove all elements
+     */
     public void clearCollection(){
         collection.clear();
     }
+
+    /**
+     * remove element by specififed id
+     * @param id id of element to be deleted
+     */
     public void removeId(int id){
         List<City> els = collection.stream().filter(x -> x.getId() == id).collect(Collectors.toList());
         collection.remove(els.get(0));
     }
 
+    /**
+     * get number of elements in collection
+     * @return size of collection
+     */
     public int getSize(){
         return collection.size();
     }
+
+    /**
+     * print elements to System.out
+     */
     @Deprecated
     public void showByIdOrder(){
         collection.forEach(System.out::println);
     }
+
+    /**
+     * print elements to System.out in ascending order
+     */
     @Deprecated
     public void showAscending(){
         collection.stream().sorted(
@@ -113,9 +145,17 @@ public class CollectionManager {
         ).forEach(System.out::println);
     }
 
+    /**
+     * get all elements
+     * @return treeset of elements
+     */
     public TreeSet<City> getCollection(){
         return (TreeSet<City>) collection.clone();
     }
+
+    /**
+     * print elements to System.out in descending order
+     */
     @Deprecated
     public void showDescending(){
         collection.stream().sorted(
@@ -123,11 +163,97 @@ public class CollectionManager {
         ).forEach(System.out::println);
     }
 
+    /**
+     * get ids of all stored elements
+     * @return list of ids
+     */
+    public List<Integer> getAllID(){
+        return collection.stream()
+                .map(City::getId)
+                .collect(Collectors.toList());
+    }
 
+    /**
+     * remove all elements with specified timezone
+     * @param tz specified timezone
+     * @return number of deleted elements
+     */
+    public int deleteAllByTimezone(int tz){
+
+        List<Integer> tbd = collection.stream()
+                .filter(x -> x.getTimezone() == tz)
+                .map(City::getId)
+                .collect(Collectors.toList());
+
+        for (int i : tbd){
+            removeId(i);
+        }
+
+        return tbd.size();
+    }
+
+    /**
+     * get max element (sorted by population)
+     * @return max element
+     */
+    public City getMax(){
+        if (getSize() == 0){
+            return null;
+        }
+        return collection.stream().max(
+                Comparator.comparing(City::getPopulation)
+        ).get();
+    }
+
+    /**
+     * get min element (sorted by population)
+     * @return min element
+     */
+    public City getMin(){
+        if (getSize() == 0){
+            return null;
+        }
+        return collection.stream().min(
+                Comparator.comparing(City::getPopulation)
+        ).get();
+    }
+
+    /**
+     * update element with specified if
+     * @param id if of element
+     * @param city new element
+     */
+    public void updateElement(int id, City city){
+        removeId(id);
+        city.setId(id);
+        addElement(city);
+    }
+
+    /**
+     * remove all element that are greater than given (sorted by population)
+     * @param city element to be compared to
+     * @return number of deleted elements
+     */
+    public int removeAllGreater(City city) {
+
+        List<Integer> tbd = collection.stream()
+                .filter(x -> x.compareTo(city) > 0)
+                .map(City::getId)
+                .collect(Collectors.toList());
+
+        for (int i : tbd){
+            removeId(i);
+        }
+
+        return tbd.size();
+    }
+
+    /**
+     * read collection from file
+     */
     public void importJSON(){
         JSONParser parser = new JSONParser();
-        try {
-            FileReader fr = new FileReader(collectionName);
+        try (FileReader fr = new FileReader(collectionName) ){
             JSONObject jsonObject = (JSONObject) parser.parse(fr);
 
             String creationDateStr = (String) jsonObject.get("creationDate");
@@ -234,10 +360,14 @@ public class CollectionManager {
                             throw new BreachOfCollectionIntegrityException(collectionName, "governor.age");
                         }
 
-                        LocalDateTime governorBD = LocalDateTime.parse(
-                                String.valueOf( elementGovernorObj.get("birthday") ),
-                                Validator.dtFormatter
-                        );
+                        String governorBDString = String.valueOf( elementGovernorObj.get("birthday") );
+                        LocalDateTime governorBD = null;
+                        if (!governorBDString.equals("null")){
+                            governorBD = LocalDateTime.parse(
+                                    governorBDString,
+                                    Validator.dtFormatter
+                            );
+                        }
 
                         elementGovernor.setName(governorName);
                         elementGovernor.setAge(governorAge);
@@ -259,7 +389,6 @@ public class CollectionManager {
 
                     collection.add(city);
 
-
                 } catch (BreachOfCollectionIntegrityException e){
                     System.err.println(e.getMessage());
                 } catch (Exception e){
@@ -268,17 +397,22 @@ public class CollectionManager {
 //                    e.printStackTrace();
                 }
             }
-            fr.close();
 
         } catch (java.io.IOException | org.json.simple.parser.ParseException e){
             System.err.println("Something's wrong with given collection.\n" +
                     "So new collection has been created.");
+        } catch (NullPointerException e){
+            System.err.println("You forgot to specify the collection file. I can't work with you!");
+            System.exit(1);
         } catch (Exception e){
             System.err.println("Всё плохо!");
-            System.err.println("Если точнее, то:" + e.getClass().getCanonicalName());
+            System.err.println("Если точнее, то: " + e.getClass().getCanonicalName());
         }
     }
 
+    /**
+     * write collection to file
+     */
     public void toJSON(){
         GsonBuilder builder = new GsonBuilder();
         builder.serializeNulls();
@@ -307,20 +441,18 @@ public class CollectionManager {
         seria.put("creationDate", date);
         seria.put("lastEditDate", LocalDateTime.now());
 
-        try {
-            FileOutputStream fileStream = new FileOutputStream(collectionName);
-            BufferedOutputStream bos = new BufferedOutputStream(fileStream);
+        try (
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(collectionName))
+        ) {
             byte[] buffer = gson.toJson(seria).getBytes();
             bos.write(buffer, 0, buffer.length);
-            bos.close();
-            fileStream.close();
 
         } catch (IOException e){
             System.err.println("Something's wrong on writing");
 
         } catch (Exception e) {
             System.err.println("Всё плохо");
-            System.err.println("Если точнее, то:" + e.getClass().getCanonicalName());
+            System.err.println("Если точнее, то: " + e.getClass().getCanonicalName());
         }
     }
 

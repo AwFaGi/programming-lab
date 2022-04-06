@@ -1,5 +1,8 @@
-package storaged;
+package stored;
 
+/**
+ * coordinates for city
+ */
 public class Coordinates {
     private Long x; //Поле не может быть null
     private Float y; //Максимальное значение поля: 960, Поле не может быть null
@@ -22,7 +25,7 @@ public class Coordinates {
 
     @Override
     public String toString() {
-        return "Coordinates{" +
+        return "Coordinates {" +
                 "x=" + x +
                 ", y=" + y +
                 '}';

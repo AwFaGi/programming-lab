@@ -1,12 +1,15 @@
 package commands;
 
-import storaged.City;
+import stored.City;
 import utils.CollectionManager;
 import utils.CommandManager;
 
 import java.util.Comparator;
 import java.util.TreeSet;
 
+/**
+ * print elements in descending order
+ */
 public class PrintDescendingCommand extends AbstractCmd{
     public PrintDescendingCommand(CommandManager commandManager){
         super(
@@ -23,7 +26,7 @@ public class PrintDescendingCommand extends AbstractCmd{
 //        CollectionManager.getInstance().showDescending();
         TreeSet<City> collection = CollectionManager.getInstance().getCollection();
         collection.stream().sorted(
-                Comparator.comparing(City::getPopulation).thenComparing(City::getArea).reversed()
+                Comparator.comparing(City::getPopulation).reversed()
         ).forEach(System.out::println);
     }
 }

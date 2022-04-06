@@ -2,6 +2,9 @@ package commands;
 
 import utils.CommandManager;
 
+/**
+ * shutdown the program
+ */
 public class ExitCommand extends AbstractCmd{
     public ExitCommand(CommandManager commandManager){
         super(

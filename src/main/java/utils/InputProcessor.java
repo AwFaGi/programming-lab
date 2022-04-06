@@ -1,14 +1,11 @@
 package utils;
 
 import exceptions.UnacceptableUserInputException;
-import storaged.City;
-import storaged.Climate;
-import storaged.Coordinates;
-import storaged.Human;
+import stored.City;
+import stored.Climate;
+import stored.Coordinates;
+import stored.Human;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -16,32 +13,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
-public class InputProcessor {
-    private static Scanner scanner;
-    private static boolean isConsole;
-    private CommandManager commandManager;
+/**
+ * class with static element to read objects from console
+ */
+public class InputProcessor{
+    private final static Scanner scanner = new Scanner(System.in);
     private static final String INPUT_PREFIX = ">>> ";
-
-    public static void enableConsoleInput(){
-        isConsole = true;
-        scanner = new Scanner(System.in);
-    }
-
-    public static void enableFileInput(File file) throws FileNotFoundException {
-        isConsole = false;
-        scanner = new Scanner(file);
-    }
-
-    public InputProcessor(CommandManager cm){
-        this.commandManager = cm;
-    }
 
     public static City inputCity(){
         //todo rewrite using validator
         City city = new City();
         CollectionManager cm = CollectionManager.getInstance();
 
-        //TODO change id generation (breaks on remove)?
         city.setId(cm.generateID());
         city.setCreationDate(new Date());
 

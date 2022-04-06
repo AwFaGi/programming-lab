@@ -3,6 +3,9 @@ package commands;
 import utils.CollectionManager;
 import utils.CommandManager;
 
+/**
+ * save collection to the file
+ */
 public class SaveCommand extends AbstractCmd{
     public SaveCommand(CommandManager commandManager){
         super(

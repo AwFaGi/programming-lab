@@ -1,10 +1,12 @@
-package storaged;
+package stored;
 
 import utils.Validator;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
+/**
+ * class for city's governor
+ */
 public class Human {
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Long age; //Значение поля должно быть больше 0
@@ -36,10 +38,11 @@ public class Human {
 
     @Override
     public String toString() {
-        return "Human{" +
-                "name='" + name + '\'' +
+        String birthdayString = birthday == null? null : birthday.format(Validator.dtFormatter);
+        return "Human {" +
+                "name='" + name + "'" +
                 ", age=" + age +
-                ", birthday=" + birthday.format(Validator.dtFormatter) +
-                '}';
+                ", birthday=" + birthdayString +
+                "}";
     }
 }

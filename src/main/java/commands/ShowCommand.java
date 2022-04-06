@@ -1,11 +1,14 @@
 package commands;
 
-import storaged.City;
+import stored.City;
 import utils.CollectionManager;
 import utils.CommandManager;
 
 import java.util.TreeSet;
 
+/**
+ * print elements of collection sorting by id
+ */
 public class ShowCommand extends AbstractCmd{
     public ShowCommand(CommandManager commandManager){
         super(

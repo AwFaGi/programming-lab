@@ -1,10 +1,12 @@
-package storaged;
+package stored;
 
 import utils.Validator;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * main element to be stored in collection
+ */
 public class City implements Comparable<City>{
     private int id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -108,24 +110,26 @@ public class City implements Comparable<City>{
 
     @Override
     public int compareTo(City o) {
-        return (int) (this.getPopulation() - o.getPopulation());
+        return this.getPopulation().compareTo(o.getPopulation());
     }
 
+    // TODO: 05.04.2022 create deep copies to prevent being hacked
+    
     @Override
     public String toString() {
 
         return "City{" +
-                "id=" + id +
-                ", name='" + name + "'" +
-                ", coordinates=" + coordinates +
-                ", creationDate=(" + Validator.sdFormatter.format(creationDate) + ")" +
-                ", area=" + area +
-                ", population=" + population +
-                ", metersAboveSeaLevel=" + metersAboveSeaLevel +
-                ", timezone=" + timezone +
-                ", agglomeration=" + agglomeration +
-                ", climate=" + climate +
-                ", governor=" + governor +
-                '}';
+                "\n\tid=" + id +
+                ",\n\tname='" + name + "'" +
+                ",\n\tcoordinates=" + coordinates +
+                ",\n\tcreationDate=(" + Validator.sdFormatter.format(creationDate) + ")" +
+                ",\n\tarea=" + area +
+                ",\n\tpopulation=" + population +
+                ",\n\tmetersAboveSeaLevel=" + metersAboveSeaLevel +
+                ",\n\ttimezone=" + timezone +
+                ",\n\tagglomeration=" + agglomeration +
+                ",\n\tclimate=" + climate +
+                ",\n\tgovernor=" + governor +
+                "\n}";
     }
 }

@@ -3,6 +3,9 @@ package commands;
 import utils.CollectionManager;
 import utils.CommandManager;
 
+/**
+ * print general info about collection
+ */
 public class InfoCommand extends AbstractCmd{
     public InfoCommand(CommandManager commandManager){
         super(

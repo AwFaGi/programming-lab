@@ -1,31 +1,38 @@
-import commands.*;
+import exceptions.CommandExecutionException;
 import utils.CollectionManager;
 import utils.CommandManager;
 import utils.InputProcessor;
+import utils.ManagerFiller;
 
+/**
+ * Main class
+ */
 public class Main {
+    /**
+     * Entry point
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
-        CommandManager cm = new CommandManager();
-        cm.addCommand(new HelpCommand(cm));
-        cm.addCommand(new ExitCommand(cm));
-        cm.addCommand(new InfoCommand(cm));
-        cm.addCommand(new AddCommand(cm));
-        cm.addCommand(new ShowCommand(cm));
-        cm.addCommand(new ClearCommand(cm));
-        cm.addCommand(new PrintAscendingCommand(cm));
-        cm.addCommand(new PrintDescendingCommand(cm));
-        cm.addCommand(new SaveCommand(cm));
-        cm.addCommand(new RemoveByIdCommand(cm));
 
-        InputProcessor.enableConsoleInput();
-//        System.out.println(InputProcessor.encoding);
+        CommandManager cm = new CommandManager(false);
+        ManagerFiller.fillCommandManager(cm);
+
         String filepath = System.getenv("COLLECTION");
         CollectionManager.getInstance().attachFile(filepath);
         CollectionManager.getInstance().importJSON();
 
-        while(true){
-            String command = InputProcessor.inputString();
-            cm.processCommand(command);
+        try {
+            while (true) {
+                String command = InputProcessor.inputString();
+                try {
+                    cm.processCommand(command);
+                }catch (CommandExecutionException e){
+                    System.err.println(e.getMessage());
+                }
+            }
+        } catch (Exception e){
+            System.err.println("\nShutting down)");
+            e.printStackTrace();
         }
     }
 }
