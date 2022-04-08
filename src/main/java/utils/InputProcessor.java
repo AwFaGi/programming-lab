@@ -221,6 +221,9 @@ public class InputProcessor{
 //            System.out.print(INPUT_PREFIX);
             try {
                 value = inputLong(prompt, allowNull);
+                if (value == null){
+                    return null;
+                }
                 if (value.compareTo(min_value) <= 0){
                     throw new UnacceptableUserInputException(
                             String.format("Long in range (%d..)", min_value)

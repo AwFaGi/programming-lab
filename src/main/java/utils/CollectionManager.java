@@ -317,9 +317,14 @@ public class CollectionManager {
                         throw new BreachOfCollectionIntegrityException(collectionName, "population");
                     }
 
-                    float elementMeters = Float.parseFloat(
-                            String.valueOf( element.get("metersAboveSeaLevel") )
-                    );
+                    Float elementMeters = null;
+                    try {
+                        elementMeters = Float.parseFloat(
+                                String.valueOf( element.get("metersAboveSeaLevel") )
+                        );
+                    } catch (NumberFormatException ignored){
+
+                    }
 
                     int elementTZ = Integer.parseInt(
                             String.valueOf( element.get("timezone") )
@@ -328,9 +333,15 @@ public class CollectionManager {
                         throw new BreachOfCollectionIntegrityException(collectionName, "timezone");
                     }
 
-                    long elementAgglomeration = Long.parseLong(
-                            String.valueOf( element.get("agglomeration") )
-                    );
+                    Long elementAgglomeration = null;
+                    try{
+                        elementAgglomeration = Long.parseLong(
+                                String.valueOf( element.get("agglomeration") )
+                        );
+                    } catch (NumberFormatException ignored){
+
+                    }
+
 
                     String elementClimateStr = String.valueOf(
                             element.get("climate")
@@ -353,9 +364,15 @@ public class CollectionManager {
                             throw new BreachOfCollectionIntegrityException(collectionName, "governor.name");
                         }
 
-                        long governorAge = Long.parseLong(
-                                String.valueOf( elementGovernorObj.get("age") )
-                        );
+                        Long governorAge = null;
+                        try {
+                            governorAge = Long.parseLong(
+                                    String.valueOf( elementGovernorObj.get("age") )
+                            );
+                        } catch (NumberFormatException ignored){
+
+                        }
+
                         if (!Validator.validateGovernorAge(governorAge)){
                             throw new BreachOfCollectionIntegrityException(collectionName, "governor.age");
                         }
@@ -394,7 +411,7 @@ public class CollectionManager {
                 } catch (Exception e){
                     System.err.println("Ух, что тама произошло!");
                     System.err.println("Если точнее, то:" + e.getClass().getCanonicalName());
-//                    e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
 

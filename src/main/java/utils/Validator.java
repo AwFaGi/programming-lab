@@ -59,6 +59,9 @@ public class Validator {
     }
 
     public static boolean validateGovernorAge(Long age){
+        if (age == null){
+            return true;
+        }
         return age > MIN_GOVERNOR_AGE;
     }
 
