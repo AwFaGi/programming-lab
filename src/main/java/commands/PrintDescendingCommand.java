@@ -2,16 +2,16 @@ package commands;
 
 import stored.City;
 import utils.CollectionManager;
-import utils.CommandManager;
+import server.ServerCmdManager;
 
 import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * print elements in descending order
  */
 public class PrintDescendingCommand extends AbstractCmd{
-    public PrintDescendingCommand(CommandManager commandManager){
+    public PrintDescendingCommand(ServerCmdManager commandManager){
         super(
                 "print_descending",
                 "print_descending",
@@ -22,11 +22,16 @@ public class PrintDescendingCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
+    public String run(){
 //        CollectionManager.getInstance().showDescending();
-        TreeSet<City> collection = CollectionManager.getInstance().getCollection();
-        collection.stream().sorted(
-                Comparator.comparing(City::getPopulation).reversed()
-        ).forEach(System.out::println);
+//        TreeSet<City> collection = CollectionManager.getInstance().getCollection();
+//        collection.stream().sorted(
+//                Comparator.comparing(City::getPopulation).reversed()
+//        ).forEach(System.out::println);
+
+        return CollectionManager.getInstance().getCollection().stream()
+                .sorted(
+                        Comparator.comparing(City::getPopulation).reversed()
+                ).map(City::toString).collect(Collectors.joining("\n"));
     }
 }

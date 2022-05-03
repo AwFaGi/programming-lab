@@ -3,7 +3,7 @@ package commands;
 import exceptions.WhileRunCommandException;
 import stored.City;
 import utils.CollectionManager;
-import utils.CommandManager;
+import server.ServerCmdManager;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * update element in collection by given id
  */
 public class UpdateCommand extends AbstractCmd{
-    public UpdateCommand(CommandManager commandManager){
+    public UpdateCommand(ServerCmdManager commandManager){
         super(
                 "update",
                 "update id {element}",
@@ -22,7 +22,7 @@ public class UpdateCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
+    public String run(){
         int id = Integer.parseInt( (String) args.get(0));
         City elem = (City) args.get(1);
 
@@ -33,7 +33,7 @@ public class UpdateCommand extends AbstractCmd{
         }
 
         CollectionManager.getInstance().updateElement(id, elem);
-        System.out.println("Updated");
+        return "Updated";
 
     }
 }

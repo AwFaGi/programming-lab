@@ -1,13 +1,15 @@
 package commands;
 
-import utils.CommandManager;
+import server.ServerCmdManager;
+
+import java.util.stream.Collectors;
 
 /**
  * print information about all available commands
  */
 public class HelpCommand extends AbstractCmd{
 
-    public HelpCommand(CommandManager commandManager){
+    public HelpCommand(ServerCmdManager commandManager){
         super(
                 "help",
                 "help",
@@ -18,12 +20,13 @@ public class HelpCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
-        for (AbstractCmd command:
-             commandManager.getCommands()) {
-            System.out.println(command.getBigInfo());
-            System.out.println();
-        }
+    public String run(){
+//        for (AbstractCmd command:
+//             commandManager.getCommands()) {
+//            System.out.println(command.getBigInfo());
+//            System.out.println();
+//        }
+        return commandManager.getCommands().stream().map(AbstractCmd::getBigInfo).collect(Collectors.joining("\n"));
     }
 
 }

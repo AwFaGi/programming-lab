@@ -1,9 +1,11 @@
 package stored;
 
+import java.io.Serializable;
+
 /**
  * coordinates for city
  */
-public class Coordinates {
+public class Coordinates implements Serializable {
     private Long x; //Поле не может быть null
     private Float y; //Максимальное значение поля: 960, Поле не может быть null
 

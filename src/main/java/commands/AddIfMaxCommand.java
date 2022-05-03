@@ -2,13 +2,13 @@ package commands;
 
 import stored.City;
 import utils.CollectionManager;
-import utils.CommandManager;
+import server.ServerCmdManager;
 
 /**
  * class for command 'add_if_max' (add element to the collection if 'Population' is the greatest among stored)
  */
 public class AddIfMaxCommand extends AbstractCmd{
-    public AddIfMaxCommand(CommandManager commandManager){
+    public AddIfMaxCommand(ServerCmdManager commandManager){
         super(
                 "add_if_max",
                 "add_if_max {element}",
@@ -20,16 +20,16 @@ public class AddIfMaxCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
+    public String run(){
         City elem = (City) args.get(0);
         City maxElem = CollectionManager.getInstance().getMax();
 
         if (maxElem == null || elem.compareTo(maxElem) >= 0){
             CollectionManager.getInstance().addElement(elem);
-            System.out.println("Insert 1 row");
+            return "Insert 1 row";
         } else {
 
-            System.out.println("Insert 0 row");
+            return "Insert 0 row";
         }
     }
 }

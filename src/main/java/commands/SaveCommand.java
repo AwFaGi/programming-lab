@@ -1,13 +1,13 @@
 package commands;
 
 import utils.CollectionManager;
-import utils.CommandManager;
+import server.ServerCmdManager;
 
 /**
  * save collection to the file
  */
 public class SaveCommand extends AbstractCmd{
-    public SaveCommand(CommandManager commandManager){
+    public SaveCommand(ServerCmdManager commandManager){
         super(
                 "save",
                 "save",
@@ -18,7 +18,8 @@ public class SaveCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
+    public String run(){
         CollectionManager.getInstance().toJSON();
+        return "";
     }
 }

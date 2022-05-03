@@ -6,6 +6,7 @@ import stored.City;
 import stored.Climate;
 import stored.Coordinates;
 import stored.Human;
+import client.ClientCmdManager;
 
 import java.io.FileReader;
 import java.time.LocalDateTime;
@@ -17,11 +18,11 @@ import java.util.Scanner;
  */
 public class ScriptFileProcessor {
     private final Scanner sc;
-    private final CommandManager cm;
+    private final ClientCmdManager cm;
 
     public ScriptFileProcessor(FileReader fr){
         sc = new Scanner(fr);
-        cm = new CommandManager(true, this);
+        cm = new ClientCmdManager(true, this);
         ManagerFiller.fillCommandManager(cm);
     }
 

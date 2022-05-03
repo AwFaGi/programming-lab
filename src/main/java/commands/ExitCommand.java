@@ -1,12 +1,12 @@
 package commands;
 
-import utils.CommandManager;
+import server.ServerCmdManager;
 
 /**
  * shutdown the program
  */
 public class ExitCommand extends AbstractCmd{
-    public ExitCommand(CommandManager commandManager){
+    public ExitCommand(ServerCmdManager commandManager){
         super(
                 "exit",
                 "exit",
@@ -17,8 +17,9 @@ public class ExitCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
+    public String run(){
         // TODO: 08.03.2022 check unsaved changes and ask if need to save
         System.exit(0);
+        return "";
     }
 }

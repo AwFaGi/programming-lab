@@ -2,13 +2,13 @@ package commands;
 
 import stored.City;
 import utils.CollectionManager;
-import utils.CommandManager;
+import server.ServerCmdManager;
 
 /**
  * Class for command 'add' (add element to the collection)
  */
 public class AddCommand extends AbstractCmd{
-    public AddCommand(CommandManager commandManager){
+    public AddCommand(ServerCmdManager commandManager){
         super(
                 "add",
                 "add {element}",
@@ -19,8 +19,8 @@ public class AddCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
+    public String run(){
         CollectionManager.getInstance().addElement( (City) args.get(0));
-        System.out.println("Insert 1 row");
+        return "Insert 1 row";
     }
 }

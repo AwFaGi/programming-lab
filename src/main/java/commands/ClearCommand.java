@@ -1,13 +1,13 @@
 package commands;
 
 import utils.CollectionManager;
-import utils.CommandManager;
+import server.ServerCmdManager;
 
 /**
  * Remove all elements
  */
 public class ClearCommand extends AbstractCmd{
-    public ClearCommand(CommandManager commandManager){
+    public ClearCommand(ServerCmdManager commandManager){
         super(
                 "clear",
                 "clear",
@@ -18,7 +18,8 @@ public class ClearCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
+    public String run(){
         CollectionManager.getInstance().clearCollection();
+        return "Successfully cleared!";
     }
 }

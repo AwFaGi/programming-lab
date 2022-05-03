@@ -2,15 +2,15 @@ package commands;
 
 import stored.City;
 import utils.CollectionManager;
-import utils.CommandManager;
+import server.ServerCmdManager;
 
-import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * print elements of collection sorting by id
  */
 public class ShowCommand extends AbstractCmd{
-    public ShowCommand(CommandManager commandManager){
+    public ShowCommand(ServerCmdManager commandManager){
         super(
                 "show",
                 "show",
@@ -21,9 +21,12 @@ public class ShowCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
+    public String run(){
 //        CollectionManager.getInstance().showByIdOrder();
-        TreeSet<City> collection = CollectionManager.getInstance().getCollection();
-        collection.forEach(System.out::println);
+//        TreeSet<City> collection = CollectionManager.getInstance().getCollection();
+//        collection.forEach(System.out::println);
+
+        return CollectionManager.getInstance().getCollection().stream()
+                .map(City::toString).collect(Collectors.joining("\n"));
     }
 }

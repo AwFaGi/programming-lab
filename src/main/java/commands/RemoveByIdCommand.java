@@ -2,7 +2,7 @@ package commands;
 
 import exceptions.WhileRunCommandException;
 import utils.CollectionManager;
-import utils.CommandManager;
+import server.ServerCmdManager;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * remove all elements by provided id
  */
 public class RemoveByIdCommand extends AbstractCmd{
-    public RemoveByIdCommand(CommandManager commandManager){
+    public RemoveByIdCommand(ServerCmdManager commandManager){
         super(
                 "remove_by_id",
                 "remove_by_id id",
@@ -21,7 +21,7 @@ public class RemoveByIdCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
+    public String run(){
 
         int id = Integer.parseInt( (String) args.get(0));
 
@@ -32,7 +32,7 @@ public class RemoveByIdCommand extends AbstractCmd{
         }
 
         CollectionManager.getInstance().removeId(id);
-        System.out.println(String.format("Rows removed: 1"));
+        return "Rows removed: 1";
 
     }
 }

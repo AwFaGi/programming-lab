@@ -2,14 +2,14 @@ package commands;
 
 import exceptions.WhileRunCommandException;
 import utils.CollectionManager;
-import utils.CommandManager;
+import server.ServerCmdManager;
 import utils.Validator;
 
 /**
  * remove all elements by provided timezone
  */
 public class RemoveAllByTZCommand extends AbstractCmd{
-    public RemoveAllByTZCommand(CommandManager commandManager){
+    public RemoveAllByTZCommand(ServerCmdManager commandManager){
         super(
                 "remove_all_by_timezone",
                 "remove_all_by_timezone timezone",
@@ -20,7 +20,7 @@ public class RemoveAllByTZCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
+    public String run(){
 
         int tz = Integer.parseInt( (String) args.get(0));
         if (!Validator.validateTimezone(tz)){
@@ -29,7 +29,7 @@ public class RemoveAllByTZCommand extends AbstractCmd{
 
         int deleted = CollectionManager.getInstance().deleteAllByTimezone(tz);
 
-        System.out.println(String.format("Rows removed: %d", deleted));
+        return String.format("Rows removed: %d", deleted);
 
     }
 }

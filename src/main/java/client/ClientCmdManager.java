@@ -1,37 +1,28 @@
-package utils;
-
-import commands.AbstractCmd;
-
-import java.util.*;
+package client;
 
 import exceptions.CommandExecutionException;
 import exceptions.NoSuchCommandException;
 import exceptions.UnsatisfiedArgumentsException;
 import exceptions.WhileRunCommandException;
-import stored.City;
+import transfer.CmdTemplate;
+import utils.InputProcessor;
+import utils.ScriptFileProcessor;
 
-/**
- * class for handling commands
- */
-public class CommandManager {
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class ClientCmdManager {
     public final static int RECURSION_LIMIT = 3;
     public static int recursionDepth = 0;
 
     private boolean worksInScript;
     private ScriptFileProcessor scriptFileProcessor;
 
-    private Map<String, AbstractCmd> availableCommands = new LinkedHashMap<>();
+    private Map<String, CmdTemplate> availableCommands = new LinkedHashMap<>();
 
-    public ArrayList<AbstractCmd> getCommands(){
+    public ArrayList<CmdTemplate> getCommands(){
         return new ArrayList<>(availableCommands.values());
-    }
-
-    /**
-     * add command to list of available commands
-     * @param command command to add
-     */
-    public void addCommand(AbstractCmd command){
-        availableCommands.put(command.getName(), command);
     }
 
     /**
@@ -40,20 +31,11 @@ public class CommandManager {
      * @return class of command (by given name)
      * @throws NoSuchCommandException if command not found
      */
-    public AbstractCmd getCommandByName(String name) throws NoSuchCommandException{
+    public CmdTemplate getCommandByName(String name) throws NoSuchCommandException{
         if (!availableCommands.containsKey(name)) {
             throw new NoSuchCommandException(name);
         }
         return availableCommands.get(name);
-    }
-
-    public CommandManager (boolean worksInScript){
-        this.worksInScript = worksInScript;
-    }
-
-    public CommandManager (boolean worksInScript, ScriptFileProcessor scriptFileProcessor){
-        this.worksInScript = worksInScript;
-        this.scriptFileProcessor = scriptFileProcessor;
     }
 
     /**
@@ -61,12 +43,12 @@ public class CommandManager {
      * @param userInput command string (maybe with arguments)
      * @throws CommandExecutionException if there was error
      */
-    public void processCommand(String userInput) throws CommandExecutionException{
+    public CmdTemplate processCommand(String userInput) throws CommandExecutionException{
         try {
             String[] smth = userInput.split(" ", 2);
             String command = smth[0];
 
-            AbstractCmd currentCommand = getCommandByName(command);
+            CmdTemplate currentCommand = getCommandByName(command).createCopy();
 
             // TODO: 10.03.2022 rewrite with checking on sendArg (mb done?)
             if (smth.length > 1){
@@ -83,11 +65,28 @@ public class CommandManager {
                 }
             }
 
-            currentCommand.execute();
-        //NoSuchCommandException | UnsatisfiedArgumentsException | WhileRunCommandException
+            return currentCommand;
+            //NoSuchCommandException | UnsatisfiedArgumentsException | WhileRunCommandException
         } catch (NoSuchCommandException | UnsatisfiedArgumentsException | WhileRunCommandException e) {
             throw new CommandExecutionException(e.getMessage());
         }
+    }
+
+    /**
+     * add command to list of available commands
+     * @param command command to add
+     */
+    public void addCommand(CmdTemplate command){
+        availableCommands.put(command.name, command);
+    }
+
+    public ClientCmdManager(boolean worksInScript){
+        this.worksInScript = worksInScript;
+    }
+
+    public ClientCmdManager(boolean worksInScript, ScriptFileProcessor scriptFileProcessor){
+        this.worksInScript = worksInScript;
+        this.scriptFileProcessor = scriptFileProcessor;
     }
 
 }

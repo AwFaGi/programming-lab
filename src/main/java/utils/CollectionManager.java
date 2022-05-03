@@ -2,13 +2,17 @@ package utils;
 
 import com.google.gson.*;
 import exceptions.BreachOfCollectionIntegrityException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import server.Server;
 import stored.City;
 import stored.Climate;
 import stored.Coordinates;
 import stored.Human;
+import sun.rmi.runtime.Log;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -24,9 +28,10 @@ import java.util.stream.Collectors;
  */
 public class CollectionManager {
     private static final CollectionManager INSTANCE = new CollectionManager();
+    private static final Logger LOGGER = LogManager.getLogger(CollectionManager.class);
 
     private TreeSet<City> collection = new TreeSet<>(
-            Comparator.comparing(City::getId)
+            Comparator.comparing(City::getName)
     );
     private LocalDateTime date = LocalDateTime.now();
     private String collectionName;
@@ -37,6 +42,7 @@ public class CollectionManager {
      */
     public void attachFile(String filename){
         collectionName = filename;
+        LOGGER.info("Attached file: " + filename);
     }
 
     private CollectionManager() {}
@@ -405,25 +411,25 @@ public class CollectionManager {
                     city.setGovernor(elementGovernor);
 
                     collection.add(city);
-
+                    LOGGER.info("City successfully loaded");
                 } catch (BreachOfCollectionIntegrityException e){
-                    System.err.println(e.getMessage());
+                    LOGGER.error(e.getMessage());
                 } catch (Exception e){
-                    System.err.println("Ух, что тама произошло!");
-                    System.err.println("Если точнее, то:" + e.getClass().getCanonicalName());
-                    e.printStackTrace();
+                    LOGGER.error("Ух, что тама произошло!");
+                    LOGGER.error("Если точнее, то:" + e.getClass().getCanonicalName());
+                    LOGGER.error(e);
                 }
             }
-
+            LOGGER.info("Collection successfully loaded");
         } catch (java.io.IOException | org.json.simple.parser.ParseException e){
-            System.err.println("Something's wrong with given collection.\n" +
+            LOGGER.warn("Something's wrong with given collection.\n" +
                     "So new collection has been created.");
         } catch (NullPointerException e){
-            System.err.println("You forgot to specify the collection file. I can't work with you!");
+            LOGGER.fatal("You forgot to specify the collection file. I can't work with you!");
             System.exit(1);
         } catch (Exception e){
-            System.err.println("Всё плохо!");
-            System.err.println("Если точнее, то: " + e.getClass().getCanonicalName());
+            LOGGER.fatal("Всё плохо!");
+            LOGGER.fatal("Если точнее, то: " + e.getClass().getCanonicalName());
         }
     }
 
@@ -465,11 +471,11 @@ public class CollectionManager {
             bos.write(buffer, 0, buffer.length);
 
         } catch (IOException e){
-            System.err.println("Something's wrong on writing");
+            LOGGER.error("Something's wrong on writing");
 
         } catch (Exception e) {
-            System.err.println("Всё плохо");
-            System.err.println("Если точнее, то: " + e.getClass().getCanonicalName());
+            LOGGER.error("Всё плохо");
+            LOGGER.error("Если точнее, то: " + e.getClass().getCanonicalName());
         }
     }
 

@@ -2,12 +2,13 @@ package stored;
 
 import utils.Validator;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * class for city's governor
  */
-public class Human {
+public class Human implements Serializable {
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Long age; //Значение поля должно быть больше 0
     private java.time.LocalDateTime birthday;

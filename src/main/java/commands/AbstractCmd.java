@@ -3,7 +3,8 @@ package commands;
 import exceptions.UnsatisfiedArgumentsException;
 import exceptions.WhileRunCommandException;
 import stored.City;
-import utils.CommandManager;
+import server.ServerCmdManager;
+import transfer.CmdTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,12 +12,12 @@ import java.util.Arrays;
 /**
  * Mother class for all commands
  */
-public abstract class AbstractCmd implements Command{
-    private final String name;
-    private final String usage;
-    private final String description;
-    private final String[] requirements;
-    protected CommandManager commandManager;
+public abstract class AbstractCmd implements Command, ArgsDependency{
+    protected final String name;
+    protected final String usage;
+    protected final String description;
+    protected final String[] requirements;
+    protected ServerCmdManager commandManager;
     protected ArrayList<Object> args = new ArrayList<>();
 
     /**
@@ -39,15 +40,16 @@ public abstract class AbstractCmd implements Command{
      * @throws UnsatisfiedArgumentsException types of given and required arguments don't match
      */
     @Override
-    public void execute() throws WhileRunCommandException, UnsatisfiedArgumentsException {
+    public String execute() throws WhileRunCommandException, UnsatisfiedArgumentsException {
         if (args.size() != requirements.length){
             clearArgs();
             String message = requirements.length > 0? Arrays.toString(getRequirements()): "no arguments";
             throw new UnsatisfiedArgumentsException(message);
         }
         try {
-            run();
+            String result = run();
             clearArgs();
+            return result;
         } catch (WhileRunCommandException e) {
             clearArgs();
             throw e;
@@ -55,6 +57,9 @@ public abstract class AbstractCmd implements Command{
 
     }
 
+    public CmdTemplate getTemplate(){
+        return new CmdTemplate(getName(), getUsage(), getDescription(), getRequirements());
+    }
 
     /**
      * gets arg and checks its type
@@ -117,6 +122,9 @@ public abstract class AbstractCmd implements Command{
     public void clearArgs(){
         args.clear();
     }
+
+    @Override
+    public ArrayList<Object> getArgs() { return args; }
 
 //    @Override
 //    public void checkArgs() throws UnsatisfiedArgumentsException {

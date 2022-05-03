@@ -2,13 +2,13 @@ package commands;
 
 import stored.City;
 import utils.CollectionManager;
-import utils.CommandManager;
+import server.ServerCmdManager;
 
 /**
  * remove all elements greater than provided element
  */
 public class RemoveGreaterCommand extends AbstractCmd{
-    public RemoveGreaterCommand(CommandManager commandManager){
+    public RemoveGreaterCommand(ServerCmdManager commandManager){
         super(
                 "remove_greater",
                 "remove_greater {element}",
@@ -19,11 +19,11 @@ public class RemoveGreaterCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
+    public String run(){
         City elem = (City) args.get(0);
 
         int deleted = CollectionManager.getInstance().removeAllGreater(elem);
-        System.out.println(String.format("Rows removed: %d", deleted));
+        return String.format("Rows removed: %d", deleted);
 
     }
 }

@@ -1,13 +1,13 @@
 package commands;
 
 import utils.CollectionManager;
-import utils.CommandManager;
+import server.ServerCmdManager;
 
 /**
  * print general info about collection
  */
 public class InfoCommand extends AbstractCmd{
-    public InfoCommand(CommandManager commandManager){
+    public InfoCommand(ServerCmdManager commandManager){
         super(
                 "info",
                 "info",
@@ -18,7 +18,7 @@ public class InfoCommand extends AbstractCmd{
     }
 
     @Override
-    public void run(){
-        System.out.println(CollectionManager.getInstance().getInfo());
+    public String run(){
+        return CollectionManager.getInstance().getInfo();
     }
 }

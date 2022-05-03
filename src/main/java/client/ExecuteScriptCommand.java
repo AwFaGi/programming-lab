@@ -1,34 +1,34 @@
-package commands;
+package client;
 
 import exceptions.InScriptException;
-import stored.City;
-import utils.CollectionManager;
-import utils.CommandManager;
+import transfer.CmdTemplate;
+import utils.ManagerFiller;
 import utils.ScriptFileProcessor;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
 /**
  * run commands from given script file
  */
-public class ExecuteScriptCommand extends AbstractCmd{
-    public ExecuteScriptCommand(CommandManager commandManager){
+public class ExecuteScriptCommand extends CmdTemplate {
+    private ClientCmdManager commandManager;
+    public ExecuteScriptCommand(){
         super(
                 "execute_script",
                 "execute_script file_name",
                 "add element to the collection, filling fields using newline",
                 new String[]{"String"}
         );
-        this.commandManager = commandManager;
+        commandManager = new ClientCmdManager(true);
+        ManagerFiller.fillCommandManager(commandManager);
+
     }
 
-    @Override
-    public void run(){
-        String filename = (String) args.get(0);
-        CommandManager.recursionDepth += 1;
-        if (CommandManager.recursionDepth > CommandManager.RECURSION_LIMIT){
+    public void run(String filename){
+//        String filename = (String) args.get(0);
+        ClientCmdManager.recursionDepth += 1;
+        if (ClientCmdManager.recursionDepth > ClientCmdManager.RECURSION_LIMIT){
             throw new InScriptException("recursion limit for" + filename);
         }
 
@@ -38,7 +38,7 @@ public class ExecuteScriptCommand extends AbstractCmd{
         } catch (IOException e){
             System.out.println();
         } finally {
-            CommandManager.recursionDepth -= 1;
+            ClientCmdManager.recursionDepth -= 1;
         }
     }
 }

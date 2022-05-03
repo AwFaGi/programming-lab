@@ -1,12 +1,16 @@
 package utils;
 
 import commands.*;
+import client.Client;
+import client.ClientCmdManager;
+import server.ServerCmdManager;
+import transfer.CmdTemplate;
 
 /**
  * fill command manager with list of available commands
  */
 public class ManagerFiller {
-    public static void fillCommandManager(CommandManager cm){
+    public static void fillCommandManager(ServerCmdManager cm){
         cm.addCommand(new HelpCommand(cm));
 
         cm.addCommand(new InfoCommand(cm));
@@ -24,9 +28,15 @@ public class ManagerFiller {
         cm.addCommand(new RemoveAllByTZCommand(cm));
         cm.addCommand(new RemoveGreaterCommand(cm));
 
-        cm.addCommand(new ExecuteScriptCommand(cm));
+//        cm.addCommand(new ExecuteScriptCommand(cm));
 
-        cm.addCommand(new SaveCommand(cm));
-        cm.addCommand(new ExitCommand(cm));
+//        cm.addCommand(new SaveCommand(cm));
+//        cm.addCommand(new ExitCommand(cm));
+    }
+
+    public static void fillCommandManager(ClientCmdManager ccm){
+        for(CmdTemplate cmd: Client.hehCommands){
+            ccm.addCommand(cmd);
+        }
     }
 }
