@@ -8,6 +8,7 @@ public class Main {
     /**
      * Entry point
      * @param args command line arguments
+     * @throws IOException when can't exchange with other part
      */
     public static void main(String[] args) throws IOException {
 

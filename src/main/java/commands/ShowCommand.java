@@ -4,6 +4,7 @@ import stored.City;
 import utils.CollectionManager;
 import server.ServerCmdManager;
 
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 /**
@@ -26,7 +27,9 @@ public class ShowCommand extends AbstractCmd{
 //        TreeSet<City> collection = CollectionManager.getInstance().getCollection();
 //        collection.forEach(System.out::println);
 
-        return CollectionManager.getInstance().getCollection().stream()
+        return CollectionManager.getInstance().getCollection().stream().sorted(
+                    Comparator.comparing(City::getName)
+                )
                 .map(City::toString).collect(Collectors.joining("\n"));
     }
 }

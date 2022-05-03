@@ -25,8 +25,8 @@ public class InputProcessor{
         City city = new City();
         CollectionManager cm = CollectionManager.getInstance();
 
-        city.setId(cm.generateID());
-        city.setCreationDate(new Date());
+//        city.setId(cm.generateID());
+//        city.setCreationDate(new Date());
 
         city.setName(inputString("Enter name (String, not null)", false));
         city.setCoordinates(inputCoordinates());

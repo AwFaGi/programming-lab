@@ -1,22 +1,24 @@
-package commands;
+package client;
 
+import commands.AbstractCmd;
 import server.ServerCmdManager;
+import transfer.CmdTemplate;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
  * print information about all available commands
  */
-public class HelpCommand extends AbstractCmd{
-
-    public HelpCommand(ServerCmdManager commandManager){
+public class HelpCommand extends AbstractCmd {
+    private ClientCmdManager commandManager;
+    public HelpCommand(){
         super(
                 "help",
                 "help",
                 "gives information about all available commands",
                 new String[]{}
         );
-        this.commandManager = commandManager;
     }
 
     @Override
@@ -26,7 +28,13 @@ public class HelpCommand extends AbstractCmd{
 //            System.out.println(command.getBigInfo());
 //            System.out.println();
 //        }
-        return commandManager.getCommands().stream().map(AbstractCmd::getBigInfo).collect(Collectors.joining("\n"));
+        System.out.println(
+                Client.localCommands.values().stream().map(AbstractCmd::getBigInfo).collect(Collectors.joining("\n"))
+                + "\n" +
+                Client.hehCommands.stream().map(CmdTemplate::getBigInfo).collect(Collectors.joining("\n"))
+        )
+                ;
+        return "";
     }
 
 }

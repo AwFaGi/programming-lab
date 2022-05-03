@@ -1,14 +1,21 @@
 package utils;
 
+import client.Client;
 import exceptions.CommandExecutionException;
 import exceptions.InScriptException;
+import exceptions.ServerUnavailableException;
+import exceptions.UnacceptableUserInputException;
 import stored.City;
 import stored.Climate;
 import stored.Coordinates;
 import stored.Human;
 import client.ClientCmdManager;
+import transfer.CmdTemplate;
 
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.DatagramChannel;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Scanner;
@@ -27,25 +34,39 @@ public class ScriptFileProcessor {
     }
 
     public void execute(){
-        while (sc.hasNext()){
-            String cmd = sc.nextLine();
-            try {
-                cm.processCommand(cmd);
-                System.out.println();
-            } catch (CommandExecutionException e){
-                System.err.println(e.getMessage());
-                throw new InScriptException( String.format("failed execute '%s'", cmd) );
+        try (DatagramChannel channel = DatagramChannel.open();) {
+
+            channel.bind(null);
+            channel.configureBlocking(false);
+            ByteBuffer fromBuffer = ByteBuffer.allocate(1024 * 8);
+            while (sc.hasNext()) {
+                String cmd = sc.nextLine();
+                try {
+                    CmdTemplate command = cm.processCommand(cmd);
+                    Client.sendCommandAndGetAnswer(command, channel, fromBuffer);
+                } catch (CommandExecutionException e) {
+                    System.err.println(e.getMessage());
+                    throw new InScriptException(String.format("failed execute '%s'", cmd));
+                }
             }
+        }catch (ServerUnavailableException e){
+            throw new InScriptException(String.format("failed execute due to '%s'", e));
+        }
+        catch (java.io.EOFException e){
+            throw new InScriptException(String.format("failed execute due to '%s'", "Buffer overflow!"));
+        }
+        catch(IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
     }
 
     public City inputCity(){
         City city = new City();
-        CollectionManager cm = CollectionManager.getInstance();
+//        CollectionManager cm = CollectionManager.getInstance();
 
-        city.setId(cm.generateID());
-        city.setCreationDate(new Date());
+//        city.setId(cm.generateID());
+//        city.setCreationDate(new Date());
 
         if (!sc.hasNextLine()){
             throw new InScriptException("failed read city.name");
@@ -125,7 +146,12 @@ public class ScriptFileProcessor {
         if (climate.equals("")){
             city.setClimate(null);
         } else {
-            city.setClimate(Climate.valueOf(climate.toUpperCase()));
+
+            try {
+                city.setClimate(Climate.valueOf(climate.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                throw new InScriptException("failed read city.climate");
+            }
         }
 
         String governorTest = sc.nextLine();

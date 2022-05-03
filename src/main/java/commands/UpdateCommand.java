@@ -5,6 +5,7 @@ import stored.City;
 import utils.CollectionManager;
 import server.ServerCmdManager;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +26,8 @@ public class UpdateCommand extends AbstractCmd{
     public String run(){
         int id = Integer.parseInt( (String) args.get(0));
         City elem = (City) args.get(1);
+
+        elem.setCreationDate(new Date());
 
         List<Integer> ids = CollectionManager.getInstance().getAllID();
 

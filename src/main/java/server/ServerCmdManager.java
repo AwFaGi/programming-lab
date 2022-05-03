@@ -34,9 +34,11 @@ public class ServerCmdManager {
         return availableCommands.get(name);
     }
 
+
     /**
      * handle command
      * @param userInput command string (maybe with arguments)
+     * @return message got after command execution
      * @throws CommandExecutionException if there was error
      */
     public String processCommand(CmdTemplate userInput) throws CommandExecutionException{
@@ -65,6 +67,5 @@ public class ServerCmdManager {
     public void addCommand(AbstractCmd command){
         availableCommands.put(command.getName(), command);
     }
-
 
 }

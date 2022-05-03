@@ -1,19 +1,22 @@
-package commands;
+package client;
 
+import commands.AbstractCmd;
 import server.ServerCmdManager;
+import transfer.CmdTemplate;
 
 /**
  * shutdown the program
  */
-public class ExitCommand extends AbstractCmd{
-    public ExitCommand(ServerCmdManager commandManager){
+public class ExitCommand extends AbstractCmd {
+    private ClientCmdManager commandManager;
+    public ExitCommand(){
         super(
                 "exit",
                 "exit",
                 "shuts down the program",
                 new String[]{}
         );
-        this.commandManager = commandManager;
+
     }
 
     @Override

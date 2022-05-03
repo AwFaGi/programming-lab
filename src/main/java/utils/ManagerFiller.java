@@ -11,7 +11,7 @@ import transfer.CmdTemplate;
  */
 public class ManagerFiller {
     public static void fillCommandManager(ServerCmdManager cm){
-        cm.addCommand(new HelpCommand(cm));
+//        cm.addCommand(new HelpCommand(cm));
 
         cm.addCommand(new InfoCommand(cm));
         cm.addCommand(new ShowCommand(cm));

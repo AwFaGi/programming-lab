@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * light version of command to transfer
+ */
 public class CmdTemplate implements Serializable, ArgsDependency {
     public final String name;
     public final String usage;
@@ -41,6 +44,11 @@ public class CmdTemplate implements Serializable, ArgsDependency {
         return new CmdTemplate(name, usage, description, requirements);
     }
 
+    public String getBigInfo(){
+        return name + "\n\t" +
+                "Usage: " + usage + "\n\t" +
+                "Description: " + description;
+    }
 
     @Override
     public String toString() {

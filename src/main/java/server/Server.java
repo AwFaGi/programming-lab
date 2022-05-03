@@ -17,14 +17,15 @@ import java.nio.channels.DatagramChannel;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+/**
+ * class for server running: work with collection
+ */
 public class Server{
     public final static int SERVICE_PORT = 50505;
     public final static SocketAddress sockaddr = new InetSocketAddress("localhost", SERVICE_PORT);
     private static final Logger LOGGER = LogManager.getLogger(Server.class);
 
     public static void main(String[] args) throws IOException{
-
-        // TODO: 03.05.2022 save & exit 
         
         LOGGER.info("Initialize");
         ServerCmdManager cm = new ServerCmdManager();
@@ -44,7 +45,19 @@ public class Server{
             while (true) {
                 if (System.in.available() > 0) {
                     String line = sc.nextLine();
-                    System.out.println(line);
+                    switch (line){
+                        case "save":
+                            CollectionManager.getInstance().toJSON();
+                            LOGGER.info("Saved!");
+                            break;
+                        case "exit":
+                            CollectionManager.getInstance().toJSON();
+                            LOGGER.info("Saved! Shutting down.");
+                            System.exit(0);
+                            break;
+                        default:
+                            LOGGER.error("I don't know '" + line + "'. I can only 'save' and 'exit'");
+                    }
                 }
 
                 adr = channel.receive(buffer);

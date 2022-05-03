@@ -5,7 +5,12 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import commands.AbstractCmd;
+import commands.Command;
 import exceptions.CommandExecutionException;
 import exceptions.ServerUnavailableException;
 import transfer.CmdTemplate;
@@ -14,12 +19,16 @@ import utils.Converter;
 import utils.InputProcessor;
 import utils.ManagerFiller;
 
+
+/**
+ * Class for client's command execution
+ */
 public class Client{
-    /* Порт сервера, к которому собирается
-  подключиться клиентский сокет */
+
     public final static int SERVICE_PORT = 50505;
     public final static SocketAddress sockaddr = new InetSocketAddress("localhost", SERVICE_PORT);
     public static ArrayList<CmdTemplate> hehCommands = new ArrayList<>();
+    public static Map<String, AbstractCmd> localCommands = new LinkedHashMap<>();
 
     public static void waitResponce(DatagramChannel channel, ByteBuffer buffer) throws IOException {
         long time = System.currentTimeMillis();
@@ -41,7 +50,6 @@ public class Client{
 
         try (DatagramChannel channel = DatagramChannel.open();){
 
-//            channel.socket().setSoTimeout(3000);
             channel.bind(null);
             channel.configureBlocking(false);
             ByteBuffer fromBuffer = ByteBuffer.allocate(1024 * 8);
@@ -51,7 +59,6 @@ public class Client{
 
             channel.send(toBuffer, Client.sockaddr);
             waitResponce(channel, fromBuffer);
-//            channel.receive(fromBuffer);
 
             try(ByteArrayInputStream baos2 = new ByteArrayInputStream(fromBuffer.array());
                 ObjectInputStream oos2 = new ObjectInputStream(baos2);){
@@ -69,30 +76,34 @@ public class Client{
             ClientCmdManager cm = new ClientCmdManager(false);
             ManagerFiller.fillCommandManager(cm);
 
+            AbstractCmd ecs_3 = new HelpCommand();
+            AbstractCmd ecs = new ExecuteScriptCommand();
+            AbstractCmd ecs_2 = new ExitCommand();
+
+            localCommands.put(ecs_3.getName(), ecs_3);
+            localCommands.put(ecs.getName(), ecs);
+            localCommands.put(ecs_2.getName(), ecs_2);
+
+
             System.out.println("Contact is here!");
 
 
             while (true) {
                 String command = InputProcessor.inputString();
                 try {
-                    CmdTemplate cmd = cm.processCommand(command);
-                    ByteBuffer buffer = Converter.convertToBB(cmd);
-                    channel.send(buffer, Client.sockaddr);
-                    waitResponce(channel, fromBuffer);
-                    try (ByteArrayInputStream baos = new ByteArrayInputStream(fromBuffer.array());
-                         ObjectInputStream oos = new ObjectInputStream(baos);){
-                        Responce resp = (Responce) oos.readObject();
-                        if (resp.isError){
-                            System.err.println(resp.message);
-                        } else {
-                            System.out.println(resp.message);
-                        }
+
+                    if (localCommands.containsKey(command.split(" ")[0])){
+                        cm.executeLocalCommand(command);
+                        continue;
                     }
-                    buffer.clear();
-                    fromBuffer.clear();
+
+                    CmdTemplate cmd = cm.processCommand(command);
+                    sendCommandAndGetAnswer(cmd, channel, fromBuffer);
 
                 }catch (CommandExecutionException e){
                     System.err.println(e.getMessage());
+                }finally {
+                    fromBuffer.clear();
                 }
             }
 
@@ -112,4 +123,22 @@ public class Client{
             e.printStackTrace();
         }
     }
+
+    public static void sendCommandAndGetAnswer(CmdTemplate cmd, DatagramChannel channel, ByteBuffer fromBuffer) throws IOException, ClassNotFoundException{
+        ByteBuffer buffer = Converter.convertToBB(cmd);
+        channel.send(buffer, Client.sockaddr);
+        waitResponce(channel, fromBuffer);
+        try (ByteArrayInputStream baos = new ByteArrayInputStream(fromBuffer.array());
+             ObjectInputStream oos = new ObjectInputStream(baos);){
+            Responce resp = (Responce) oos.readObject();
+            if (resp.isError){
+                System.err.println(resp.message);
+            } else {
+                System.out.println(resp.message);
+            }
+        }
+        buffer.clear();
+        fromBuffer.clear();
+    }
+
 }

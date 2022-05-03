@@ -6,7 +6,7 @@ import exceptions.UnsatisfiedArgumentsException;
 import exceptions.WhileRunCommandException;
 
 /**
- * interface for working with commands and their arguments
+ * interface for working with commands
  */
 public interface Command {
     String execute() throws WhileRunCommandException, UnsatisfiedArgumentsException;

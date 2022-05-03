@@ -4,6 +4,8 @@ import stored.City;
 import utils.CollectionManager;
 import server.ServerCmdManager;
 
+import java.util.Date;
+
 /**
  * class for command 'add_if_min' (add element to the collection if 'Population' is the lowest among stored)
  */
@@ -23,6 +25,9 @@ public class AddIfMinCommand extends AbstractCmd{
     public String run(){
         City elem = (City) args.get(0);
         City minElem = CollectionManager.getInstance().getMin();
+
+        elem.setId(CollectionManager.getInstance().generateID());
+        elem.setCreationDate(new Date());
 
         if (minElem == null || elem.compareTo(minElem) <= 0){
             CollectionManager.getInstance().addElement(elem);

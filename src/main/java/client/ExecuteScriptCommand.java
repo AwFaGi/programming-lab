@@ -1,5 +1,6 @@
 package client;
 
+import commands.AbstractCmd;
 import exceptions.InScriptException;
 import transfer.CmdTemplate;
 import utils.ManagerFiller;
@@ -11,8 +12,7 @@ import java.io.IOException;
 /**
  * run commands from given script file
  */
-public class ExecuteScriptCommand extends CmdTemplate {
-    private ClientCmdManager commandManager;
+public class ExecuteScriptCommand extends AbstractCmd {
     public ExecuteScriptCommand(){
         super(
                 "execute_script",
@@ -20,13 +20,12 @@ public class ExecuteScriptCommand extends CmdTemplate {
                 "add element to the collection, filling fields using newline",
                 new String[]{"String"}
         );
-        commandManager = new ClientCmdManager(true);
-        ManagerFiller.fillCommandManager(commandManager);
 
     }
 
-    public void run(String filename){
-//        String filename = (String) args.get(0);
+    @Override
+    public String run(){
+        String filename = (String) args.get(0);
         ClientCmdManager.recursionDepth += 1;
         if (ClientCmdManager.recursionDepth > ClientCmdManager.RECURSION_LIMIT){
             throw new InScriptException("recursion limit for" + filename);
@@ -36,9 +35,11 @@ public class ExecuteScriptCommand extends CmdTemplate {
             ScriptFileProcessor sfp = new ScriptFileProcessor(fr);
             sfp.execute();
         } catch (IOException e){
-            System.out.println();
+            System.out.println(e.getMessage());
         } finally {
             ClientCmdManager.recursionDepth -= 1;
+            this.args.clear();
         }
+        return "";
     }
 }

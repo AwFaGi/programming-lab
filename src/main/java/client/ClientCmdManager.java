@@ -1,5 +1,6 @@
 package client;
 
+import commands.AbstractCmd;
 import exceptions.CommandExecutionException;
 import exceptions.NoSuchCommandException;
 import exceptions.UnsatisfiedArgumentsException;
@@ -12,6 +13,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * User's input executor
+ */
 public class ClientCmdManager {
     public final static int RECURSION_LIMIT = 3;
     public static int recursionDepth = 0;
@@ -41,6 +45,7 @@ public class ClientCmdManager {
     /**
      * handle command
      * @param userInput command string (maybe with arguments)
+     * @return light version of command to be sent to server
      * @throws CommandExecutionException if there was error
      */
     public CmdTemplate processCommand(String userInput) throws CommandExecutionException{
@@ -89,4 +94,29 @@ public class ClientCmdManager {
         this.scriptFileProcessor = scriptFileProcessor;
     }
 
+    public void executeLocalCommand(String userInput) throws CommandExecutionException{
+        try{
+            String[] smth = userInput.split(" ", 2);
+            String command = smth[0];
+
+            AbstractCmd currentCommand = Client.localCommands.getOrDefault(command, null);
+
+            if (currentCommand == null){
+                throw new NoSuchCommandException("Can't resolve): " + command);
+            }
+
+            if (smth.length > 1){
+                for (String arg : smth[1].split(" ")){
+                    currentCommand.sendArg(arg);
+                }
+            }
+
+            currentCommand.execute();
+
+        } catch (NoSuchCommandException | UnsatisfiedArgumentsException | WhileRunCommandException e){
+            throw new CommandExecutionException(e.getMessage());
+        }
+
+
+    }
 }

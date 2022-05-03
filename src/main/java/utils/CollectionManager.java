@@ -12,7 +12,6 @@ import stored.City;
 import stored.Climate;
 import stored.Coordinates;
 import stored.Human;
-import sun.rmi.runtime.Log;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -31,7 +30,7 @@ public class CollectionManager {
     private static final Logger LOGGER = LogManager.getLogger(CollectionManager.class);
 
     private TreeSet<City> collection = new TreeSet<>(
-            Comparator.comparing(City::getName)
+            Comparator.comparing(City::getId)
     );
     private LocalDateTime date = LocalDateTime.now();
     private String collectionName;
@@ -57,7 +56,7 @@ public class CollectionManager {
      */
     public int generateID(){
         if (collection.size() > 0) {
-            City elem = collection.last();
+            City elem = collection.stream().max(Comparator.comparing(City::getId)).get();
             return elem.getId() + 1;
         } else { return 1; }
     }
@@ -225,8 +224,8 @@ public class CollectionManager {
     }
 
     /**
-     * update element with specified if
-     * @param id if of element
+     * update element with specified id
+     * @param id of element
      * @param city new element
      */
     public void updateElement(int id, City city){

@@ -118,12 +118,18 @@ public class City implements Comparable<City>, Serializable {
     
     @Override
     public String toString() {
+        String smth;
+        if (creationDate != null){
+            smth = Validator.sdFormatter.format(creationDate);
+        }else{
+            smth = "null";
+        }
 
         return "City{" +
                 "\n\tid=" + id +
                 ",\n\tname='" + name + "'" +
                 ",\n\tcoordinates=" + coordinates +
-                ",\n\tcreationDate=(" + Validator.sdFormatter.format(creationDate) + ")" +
+                ",\n\tcreationDate=(" + smth + ")" +
                 ",\n\tarea=" + area +
                 ",\n\tpopulation=" + population +
                 ",\n\tmetersAboveSeaLevel=" + metersAboveSeaLevel +
