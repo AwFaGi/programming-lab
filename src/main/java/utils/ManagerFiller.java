@@ -28,6 +28,8 @@ public class ManagerFiller {
         cm.addCommand(new RemoveAllByTZCommand(cm));
         cm.addCommand(new RemoveGreaterCommand(cm));
 
+//        cm.addCommand(new LogInCommand(cm));
+
 //        cm.addCommand(new ExecuteScriptCommand(cm));
 
 //        cm.addCommand(new SaveCommand(cm));

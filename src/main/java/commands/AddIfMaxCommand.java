@@ -28,7 +28,7 @@ public class AddIfMaxCommand extends AbstractCmd{
 
         elem.setId(CollectionManager.getInstance().generateID());
         elem.setCreationDate(new Date());
-
+        elem.setAuthor(getUsername());
         if (maxElem == null || elem.compareTo(maxElem) >= 0){
             CollectionManager.getInstance().addElement(elem);
             return "Insert 1 row";

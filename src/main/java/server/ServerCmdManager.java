@@ -31,7 +31,8 @@ public class ServerCmdManager {
         if (!availableCommands.containsKey(name)) {
             throw new NoSuchCommandException(name);
         }
-        return availableCommands.get(name);
+        Map<String, AbstractCmd> localCopy = new LinkedHashMap<>(availableCommands);
+        return localCopy.get(name);
     }
 
 
@@ -52,6 +53,9 @@ public class ServerCmdManager {
                  userInput.args) {
                 currentCommand.sendArg(i);
             }
+
+            currentCommand.setPassword(userInput.getPassword());
+            currentCommand.setUsername(userInput.getUsername());
             
             return currentCommand.execute();
             //NoSuchCommandException | UnsatisfiedArgumentsException | WhileRunCommandException

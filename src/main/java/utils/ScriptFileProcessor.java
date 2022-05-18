@@ -43,6 +43,7 @@ public class ScriptFileProcessor {
                 String cmd = sc.nextLine();
                 try {
                     CmdTemplate command = cm.processCommand(cmd);
+                    command.updateAuth(Client.login, Client.password);
                     Client.sendCommandAndGetAnswer(command, channel, fromBuffer);
                 } catch (CommandExecutionException e) {
                     System.err.println(e.getMessage());
@@ -184,6 +185,7 @@ public class ScriptFileProcessor {
         }
 
         city.setGovernor(human);
+        city.setAuthor(Client.login);
 
         return city;
     }

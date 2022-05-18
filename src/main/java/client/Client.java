@@ -11,6 +11,7 @@ import java.util.Map;
 
 import commands.AbstractCmd;
 import commands.Command;
+import commands.LogInCommand;
 import exceptions.CommandExecutionException;
 import exceptions.ServerUnavailableException;
 import transfer.CmdTemplate;
@@ -29,6 +30,11 @@ public class Client{
     public final static SocketAddress sockaddr = new InetSocketAddress("localhost", SERVICE_PORT);
     public static ArrayList<CmdTemplate> hehCommands = new ArrayList<>();
     public static Map<String, AbstractCmd> localCommands = new LinkedHashMap<>();
+
+    public static Map<String, AbstractCmd> preLoggedCommands = new LinkedHashMap<>();
+    public static String login;
+    public static String password;
+    private static boolean loggedIn = false;
 
     public static void waitResponce(DatagramChannel channel, ByteBuffer buffer) throws IOException {
         long time = System.currentTimeMillis();
@@ -84,9 +90,29 @@ public class Client{
             localCommands.put(ecs.getName(), ecs);
             localCommands.put(ecs_2.getName(), ecs_2);
 
-
             System.out.println("Contact is here!");
 
+            while (!loggedIn) {
+                String command = InputProcessor.inputString();
+                try {
+                    if (command.split(" ")[0].equals("login") || command.split(" ")[0].equals("register")){
+                        if (command.split(" ").length != 3){
+                            System.err.println("Must be like: '{login|register} username password'");
+                            continue;
+                        }
+                        CmdTemplate cmdTemplate = new CmdTemplate(command.split(" ")[0], command.split(" ")[1], command.split(" ")[2]);
+                        loggedIn = sendCommandAndCheckAnswer(cmdTemplate, channel, fromBuffer);
+                        if (loggedIn){
+                            Client.login = command.split(" ")[1];
+                            Client.password = command.split(" ")[2];
+                        }
+                    } else {
+                        System.err.println("You're not privileged to do anything. To become, use 'login' or 'register'");
+                    }
+                } finally {
+                    fromBuffer.clear();
+                }
+            }
 
             while (true) {
                 String command = InputProcessor.inputString();
@@ -98,6 +124,7 @@ public class Client{
                     }
 
                     CmdTemplate cmd = cm.processCommand(command);
+                    cmd.updateAuth(Client.login, Client.password);
                     sendCommandAndGetAnswer(cmd, channel, fromBuffer);
 
                 }catch (CommandExecutionException e){
@@ -122,6 +149,26 @@ public class Client{
             System.err.println("\nShutting down)");
             e.printStackTrace();
         }
+    }
+
+    public static boolean sendCommandAndCheckAnswer(CmdTemplate cmd, DatagramChannel channel, ByteBuffer fromBuffer) throws IOException, ClassNotFoundException{
+        ByteBuffer buffer = Converter.convertToBB(cmd);
+        channel.send(buffer, Client.sockaddr);
+        waitResponce(channel, fromBuffer);
+        try (ByteArrayInputStream baos = new ByteArrayInputStream(fromBuffer.array());
+             ObjectInputStream oos = new ObjectInputStream(baos);){
+            Responce resp = (Responce) oos.readObject();
+            if (resp.isError){
+                System.err.println(resp.message);
+            } else {
+                System.out.println(resp.message);
+            }
+            return (!resp.isError) && resp.message.startsWith("Successfully");
+        }finally {
+            buffer.clear();
+            fromBuffer.clear();
+        }
+
     }
 
     public static void sendCommandAndGetAnswer(CmdTemplate cmd, DatagramChannel channel, ByteBuffer fromBuffer) throws IOException, ClassNotFoundException{

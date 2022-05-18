@@ -22,7 +22,7 @@ public class RemoveGreaterCommand extends AbstractCmd{
     public String run(){
         City elem = (City) args.get(0);
 
-        int deleted = CollectionManager.getInstance().removeAllGreater(elem);
+        int deleted = CollectionManager.getInstance().removeAllGreater(elem, getUsername());
         return String.format("Rows removed: %d", deleted);
 
     }

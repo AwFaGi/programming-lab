@@ -28,7 +28,7 @@ public class AddIfMinCommand extends AbstractCmd{
 
         elem.setId(CollectionManager.getInstance().generateID());
         elem.setCreationDate(new Date());
-
+        elem.setAuthor(getUsername());
         if (minElem == null || elem.compareTo(minElem) <= 0){
             CollectionManager.getInstance().addElement(elem);
             return "Insert 1 row";
