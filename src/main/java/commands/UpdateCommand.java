@@ -35,7 +35,7 @@ public class UpdateCommand extends AbstractCmd{
             throw new WhileRunCommandException(getName(), "invalid ID");
         }
 
-        CollectionManager.getInstance().updateElement(id, elem);
+        CollectionManager.getInstance().updateElement(id, elem, getUsername());
         return "Updated";
 
     }

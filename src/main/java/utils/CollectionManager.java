@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
  * class for work with collection
  */
 public class CollectionManager {
-    private static final CollectionManager INSTANCE = new CollectionManager();
     private static final Logger LOGGER = LogManager.getLogger(CollectionManager.class);
+    private static final CollectionManager INSTANCE = new CollectionManager();
 
     private TreeSet<City> collection = new TreeSet<>(
             Comparator.comparing(City::getId)
@@ -39,12 +39,13 @@ public class CollectionManager {
      * attach collection to current working session
      * @param filename file with collection
      */
+    @Deprecated
     public void attachFile(String filename){
         collectionName = filename;
         LOGGER.info("Attached file: " + filename);
     }
 
-    private CollectionManager() {}
+    private CollectionManager() {syncWithDB();}
 
     public static CollectionManager getInstance() {
         return INSTANCE;
@@ -54,19 +55,25 @@ public class CollectionManager {
      * generate id for new elements
      * @return id
      */
-    public int generateID(){
+    public synchronized int generateID(){
         if (collection.size() > 0) {
             City elem = collection.stream().max(Comparator.comparing(City::getId)).get();
             return elem.getId() + 1;
         } else { return 1; }
     }
 
+    public synchronized void syncWithDB(){
+        collection = DBManager.getInstance().getAll();
+    }
+
     /**
      * add element to collection
      * @param city element to be added
      */
-    public void addElement(City city){
-        collection.add(city);
+    public synchronized String addElement(City city){
+        String res = DBManager.getInstance().insertCity(city);
+        syncWithDB();
+        return res;
     }
 
     /**
@@ -92,7 +99,7 @@ public class CollectionManager {
      * get info about collection (stored class, collection type, creation date, size)
      * @return info about collection
      */
-    public String getInfo(){
+    public synchronized String getInfo(){
         try {
             Field stringListField = CollectionManager.class.getDeclaredField("collection");
             ParameterizedType stringListType = (ParameterizedType) stringListField.getGenericType();
@@ -111,24 +118,41 @@ public class CollectionManager {
     /**
      * remove all elements
      */
-    public void clearCollection(){
-        collection.clear();
+    public synchronized void clearCollection(String username){
+        List<Integer> els = collection.stream().filter(x -> x.getAuthor().equals(username))
+                .map(City::getId).collect(Collectors.toList());
+        for (int i : els){
+            removeId(i);
+        }
     }
 
     /**
      * remove element by specififed id
      * @param id id of element to be deleted
      */
-    public void removeId(int id){
+    public synchronized void removeId(int id){
         List<City> els = collection.stream().filter(x -> x.getId() == id).collect(Collectors.toList());
-        collection.remove(els.get(0));
+//        collection.remove(els.get(0));
+        DBManager.getInstance().remove(els.get(0));
+        syncWithDB();
+    }
+
+    public synchronized void removeId(int id, String username){
+        List<City> els = collection.stream().filter(x -> x.getId() == id)
+                .filter(x -> x.getAuthor().equals(username)).collect(Collectors.toList());
+        if (els.size() >= 1){
+//            collection.remove(els.get(0));
+            DBManager.getInstance().remove(els.get(0));
+            syncWithDB();
+        }
+
     }
 
     /**
      * get number of elements in collection
      * @return size of collection
      */
-    public int getSize(){
+    public synchronized int getSize(){
         return collection.size();
     }
 
@@ -154,7 +178,7 @@ public class CollectionManager {
      * get all elements
      * @return treeset of elements
      */
-    public TreeSet<City> getCollection(){
+    public synchronized TreeSet<City> getCollection(){
         return (TreeSet<City>) collection.clone();
     }
 
@@ -172,7 +196,7 @@ public class CollectionManager {
      * get ids of all stored elements
      * @return list of ids
      */
-    public List<Integer> getAllID(){
+    public synchronized List<Integer> getAllID(){
         return collection.stream()
                 .map(City::getId)
                 .collect(Collectors.toList());
@@ -183,10 +207,11 @@ public class CollectionManager {
      * @param tz specified timezone
      * @return number of deleted elements
      */
-    public int deleteAllByTimezone(int tz){
+    public synchronized int deleteAllByTimezone(int tz, String username){
 
         List<Integer> tbd = collection.stream()
                 .filter(x -> x.getTimezone() == tz)
+                .filter(x -> x.getAuthor().equals(username))
                 .map(City::getId)
                 .collect(Collectors.toList());
 
@@ -201,7 +226,7 @@ public class CollectionManager {
      * get max element (sorted by population)
      * @return max element
      */
-    public City getMax(){
+    public synchronized City getMax(){
         if (getSize() == 0){
             return null;
         }
@@ -214,7 +239,7 @@ public class CollectionManager {
      * get min element (sorted by population)
      * @return min element
      */
-    public City getMin(){
+    public synchronized City getMin(){
         if (getSize() == 0){
             return null;
         }
@@ -228,10 +253,23 @@ public class CollectionManager {
      * @param id of element
      * @param city new element
      */
-    public void updateElement(int id, City city){
-        removeId(id);
-        city.setId(id);
-        addElement(city);
+    public synchronized void updateElement(int id, City city, String username){
+
+        List<Integer> tbu = collection.stream()
+                .filter(x -> x.getId() == id)
+                .filter(x -> x.getAuthor().equals(username))
+                .map(City::getId)
+                .collect(Collectors.toList());
+
+        if (tbu.size() > 0){
+//            removeId(id);
+            city.setId(id);
+            city.setAuthor(username);
+//            addElement(city);
+            DBManager.getInstance().forceUpdate(id, city);
+            syncWithDB();
+        }
+
     }
 
     /**
@@ -239,10 +277,11 @@ public class CollectionManager {
      * @param city element to be compared to
      * @return number of deleted elements
      */
-    public int removeAllGreater(City city) {
+    public synchronized int removeAllGreater(City city, String username) {
 
         List<Integer> tbd = collection.stream()
                 .filter(x -> x.compareTo(city) > 0)
+                .filter(x -> x.getAuthor().equals(username))
                 .map(City::getId)
                 .collect(Collectors.toList());
 
@@ -256,7 +295,8 @@ public class CollectionManager {
     /**
      * read collection from file
      */
-    public void importJSON(){
+    @Deprecated
+    public synchronized void importJSON(){
         JSONParser parser = new JSONParser();
         try (FileReader fr = new FileReader(collectionName) ){
             JSONObject jsonObject = (JSONObject) parser.parse(fr);
@@ -435,7 +475,7 @@ public class CollectionManager {
     /**
      * write collection to file
      */
-    public void toJSON(){
+    public synchronized void toJSON(){
         GsonBuilder builder = new GsonBuilder();
         builder.serializeNulls();
         builder.setPrettyPrinting();

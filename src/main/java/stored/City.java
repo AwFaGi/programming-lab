@@ -20,6 +20,17 @@ public class City implements Comparable<City>, Serializable {
     private Long agglomeration;
     private Climate climate; //Поле может быть null
     private Human governor; //Поле может быть null
+    private String author;
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+
 
     public int getId() {
         return id;
@@ -137,6 +148,6 @@ public class City implements Comparable<City>, Serializable {
                 ",\n\tagglomeration=" + agglomeration +
                 ",\n\tclimate=" + climate +
                 ",\n\tgovernor=" + governor +
-                "\n}";
+                "\n} created by: " + author;
     }
 }

@@ -31,7 +31,7 @@ public class RemoveByIdCommand extends AbstractCmd{
             throw new WhileRunCommandException(getName(), "invalid ID");
         }
 
-        CollectionManager.getInstance().removeId(id);
+        CollectionManager.getInstance().removeId(id, getUsername());
         return "Rows removed: 1";
 
     }

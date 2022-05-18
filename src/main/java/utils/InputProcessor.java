@@ -1,5 +1,6 @@
 package utils;
 
+import client.Client;
 import exceptions.UnacceptableUserInputException;
 import stored.City;
 import stored.Climate;
@@ -23,7 +24,7 @@ public class InputProcessor{
     public static City inputCity(){
         //todo rewrite using validator
         City city = new City();
-        CollectionManager cm = CollectionManager.getInstance();
+//        CollectionManager cm = CollectionManager.getInstance();
 
 //        city.setId(cm.generateID());
 //        city.setCreationDate(new Date());
@@ -40,6 +41,7 @@ public class InputProcessor{
         city.setAgglomeration(inputLong("Enter agglomeration (Long)", true));
         city.setClimate(inputClimate());
         city.setGovernor(inputHuman());
+        city.setAuthor(Client.login);
 
         return city;
     }

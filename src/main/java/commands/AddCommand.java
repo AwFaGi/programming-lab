@@ -26,7 +26,7 @@ public class AddCommand extends AbstractCmd{
         CollectionManager cm = CollectionManager.getInstance();
         city.setId(cm.generateID());
         city.setCreationDate(new Date());
-        cm.addElement( (City) args.get(0));
-        return "Insert 1 row";
+        city.setAuthor(getUsername());
+        return cm.addElement( (City) args.get(0));
     }
 }

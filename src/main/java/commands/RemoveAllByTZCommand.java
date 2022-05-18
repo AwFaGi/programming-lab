@@ -27,7 +27,7 @@ public class RemoveAllByTZCommand extends AbstractCmd{
             throw new WhileRunCommandException(getName(), "invalid timezone");
         }
 
-        int deleted = CollectionManager.getInstance().deleteAllByTimezone(tz);
+        int deleted = CollectionManager.getInstance().deleteAllByTimezone(tz, getUsername());
 
         return String.format("Rows removed: %d", deleted);
 
