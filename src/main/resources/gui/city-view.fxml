@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CityView">
+   <top>
+      <Label alignment="CENTER" contentDisplay="TOP" text="%city.input_city" textAlignment="CENTER" BorderPane.alignment="TOP_CENTER">
+         <font>
+            <Font name="Courier New Bold" size="16.0" />
+         </font>
+      </Label>
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="1.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="%city.city_name">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="cityName" />
+            <Separator prefWidth="200.0">
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
+            </Separator>
+            <Label layoutX="164.0" layoutY="20.0" text="%city.coord_x">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="cityX" layoutX="20.0" layoutY="37.0" />
+            <Separator layoutX="10.0" layoutY="581.0" prefWidth="200.0">
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
+            </Separator>
+            <Label layoutX="164.0" layoutY="62.0" text="%city.coord_y">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="cityY" layoutX="20.0" layoutY="79.0" />
+            <Separator prefWidth="200.0">
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
+            </Separator>
+            <Label layoutX="164.0" layoutY="104.0" text="%city.area">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="cityArea" layoutX="20.0" layoutY="121.0" />
+            <Separator prefWidth="200.0">
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
+            </Separator>
+            <Label layoutX="164.0" layoutY="146.0" text="%city.population">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="cityPopulation" layoutX="20.0" layoutY="163.0">
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
+            </TextField>
+            <Separator prefWidth="200.0">
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
+            </Separator>
+            <Label layoutX="164.0" layoutY="188.0" text="%city.meters_above">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="cityMetersAboveSea" layoutX="20.0" layoutY="205.0" />
+            <Separator prefWidth="200.0">
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
+            </Separator>
+            <Label layoutX="164.0" layoutY="230.0" text="%city.timezone">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="cityTimezone" layoutX="20.0" layoutY="247.0" />
+            <Separator prefWidth="200.0">
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
+            </Separator>
+            <Label layoutX="164.0" layoutY="272.0" text="%city.agglomeration">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="cityAgglomeration" layoutX="20.0" layoutY="289.0" />
+            <Separator prefWidth="200.0">
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
+            </Separator>
+            <Label layoutX="141.0" layoutY="314.0" text="%city.climate">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="cityClimate" prefWidth="150.0" />
+            <Separator prefWidth="200.0">
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
+            </Separator>
+            <CheckBox fx:id="cityGovernor" mnemonicParsing="false" onMouseClicked="#updateGovernorWidgets" text="%city.governor">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </CheckBox>
+            <VBox fx:id="governorBlock" disable="true">
+               <children>
+                  <Label text="%city.governor_name">
+                     <font>
+                        <Font name="Courier New" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="governorName" />
+                  <Separator prefWidth="200.0">
+                     <padding>
+                        <Insets bottom="3.0" top="3.0" />
+                     </padding>
+                  </Separator>
+                  <Label text="%city.governor_age">
+                     <font>
+                        <Font name="Courier New" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="governorAge" />
+                  <Separator prefWidth="200.0">
+                     <padding>
+                        <Insets bottom="3.0" top="3.0" />
+                     </padding>
+                  </Separator>
+                  <Label text="%city.governor_birthday">
+                     <font>
+                        <Font name="Courier New" size="14.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="governorBirthday" />
+               </children>
+            </VBox>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="10.0" top="13.0" />
+         </padding>
+      </VBox>
+   </center>
+   <bottom>
+      <GridPane alignment="BOTTOM_CENTER" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="cityInputEnd" mnemonicParsing="false" onAction="#checkCity" text="%city.ready">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="cityInputCancel" mnemonicParsing="false" onAction="#cancelCity" text="%city.cancel" GridPane.columnIndex="1">
+               <font>
+                  <Font name="Courier New" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </GridPane>
+   </bottom>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</BorderPane>

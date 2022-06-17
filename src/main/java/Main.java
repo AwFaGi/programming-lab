@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         if(args.length == 0){
-            System.err.println("You need to specify working type (server/client)");
+            System.err.println("You need to specify working type (server/client/client-gui)");
             System.exit(1);
         }
 
@@ -21,6 +21,8 @@ public class Main {
             server.Server.main(Arrays.copyOfRange(args, 1, args.length));
         } else if (args[0].equalsIgnoreCase("client")) {
             client.Client.main(Arrays.copyOfRange(args, 1, args.length));
+        } else if (args[0].equalsIgnoreCase("client-gui")) {
+            gui.ClientGUI.main(Arrays.copyOfRange(args, 1, args.length));
         } else {
             System.err.println("Unknown option!");
             System.exit(1);

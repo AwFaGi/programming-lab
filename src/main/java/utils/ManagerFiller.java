@@ -6,6 +6,8 @@ import client.ClientCmdManager;
 import server.ServerCmdManager;
 import transfer.CmdTemplate;
 
+import java.util.ArrayList;
+
 /**
  * fill command manager with list of available commands
  */
@@ -38,6 +40,12 @@ public class ManagerFiller {
 
     public static void fillCommandManager(ClientCmdManager ccm){
         for(CmdTemplate cmd: Client.hehCommands){
+            ccm.addCommand(cmd);
+        }
+    }
+
+    public static void fillCommandManager(ClientCmdManager ccm, ArrayList<CmdTemplate> arr){
+        for(CmdTemplate cmd: arr){
             ccm.addCommand(cmd);
         }
     }

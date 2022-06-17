@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="768.0" minWidth="1024.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainView">
+  <tabs>
+    <Tab text="%main.table">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <TableView fx:id="mainTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <columns>
+                        <TableColumn fx:id="columnId" minWidth="-1.0" prefWidth="75.0" text="ID" />
+                        <TableColumn fx:id="columnName" minWidth="-1.0" prefWidth="100.0" text="%city.city_name" />
+                        <TableColumn fx:id="columnCreationDate" minWidth="-1.0" prefWidth="100.0" text="Время создания" />
+                        <TableColumn fx:id="columnAuthor" minWidth="-1.0" prefWidth="75.0" text="Автор" />
+                        <TableColumn fx:id="columnCoordX" minWidth="-1.0" prefWidth="100.0" text="%city.coord_x" />
+                        <TableColumn fx:id="columnCoordY" minWidth="-1.0" prefWidth="100.0" text="%city.coord_y" />
+                        <TableColumn fx:id="columnArea" minWidth="-1.0" prefWidth="75.0" text="%city.area" />
+                        <TableColumn fx:id="columnPopulation" minWidth="-1.0" prefWidth="75.0" text="%city.population" />
+                        <TableColumn fx:id="columnMetersAbove" minWidth="-1.0" prefWidth="75.0" text="%city.meters_above" />
+                        <TableColumn fx:id="columnTimezone" minWidth="-1.0" prefWidth="100.0" text="%city.timezone" />
+                        <TableColumn fx:id="columnAglomeration" minWidth="-1.0" prefWidth="100.0" text="%city.agglomeration" />
+                        <TableColumn fx:id="columnCLimate" minWidth="-1.0" text="%city.climate" />
+                        <TableColumn fx:id="columnGovernorName" minWidth="-1.0" text="%main.governor_name" />
+                        <TableColumn fx:id="columnGovernorAge" minWidth="-1.0" prefWidth="100.0" text="%main.governor_age" />
+                        <TableColumn fx:id="columnGovernorBirthday" minWidth="-1.0" prefWidth="150.0" text="%main.governor_birthday" />
+                     </columns>
+                  </TableView>
+               </center>
+            </BorderPane>
+         </content></Tab>
+    <Tab text="%main.graphics">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <Group fx:id="cityGroup" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+         </content></Tab>
+      <Tab text="%main.management">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <top>
+                  <Label fx:id="currentUser" text="%main.current_user" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Courier New" size="14.0" />
+                     </font>
+                     <BorderPane.margin>
+                        <Insets bottom="20.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </top>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets top="15.0" />
+               </padding>
+               <center>
+                  <Accordion fx:id="commandAccordion" BorderPane.alignment="CENTER" />
+               </center>
+               <bottom>
+                  <TextArea fx:id="logArea" editable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Courier New" size="13.0" />
+                     </font>
+                  </TextArea>
+               </bottom>
+            </BorderPane>
+         </content></Tab>
+  </tabs>
+</TabPane>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.WelcomeController">
+    <bottom>
+        <Hyperlink fx:id="welcomeLangChange" onAction="#askLang" text="Памагите / Ajuda / Segítség / Ayuda" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Courier New Bold" size="14.0" />
+         </font></Hyperlink>
+    </bottom>
+    <opaqueInsets>
+        <Insets />
+    </opaqueInsets>
+    <center>
+        <GridPane BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="1" />
+                <GridPane alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="%registration">
+                            <font>
+                                <Font name="Courier New Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="regLogin" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                        <PasswordField fx:id="regPassword" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </PasswordField>
+                        <Button fx:id="regButton" mnemonicParsing="false" onAction="#doRegister" text="%register" GridPane.rowIndex="3">
+                            <font>
+                                <Font name="Courier New Bold" size="14.0" />
+                            </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                        </Button>
+                    </children>
+                    <GridPane.margin>
+                        <Insets left="50.0" />
+                    </GridPane.margin>
+                </GridPane>
+                <GridPane alignment="CENTER" GridPane.columnIndex="2">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="%authorisation">
+                            <font>
+                                <Font name="Courier New Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="signinLogin" GridPane.rowIndex="1">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                        <PasswordField fx:id="signinPassword" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </PasswordField>
+                        <Button fx:id="signinButton" mnemonicParsing="false" onAction="#doSignin" text="%sign_in" GridPane.rowIndex="3">
+                            <font>
+                                <Font name="Courier New Bold" size="14.0" />
+                            </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                        </Button>
+                    </children>
+                    <GridPane.margin>
+                        <Insets right="50.0" />
+                    </GridPane.margin>
+                </GridPane>
+            </children>
+        </GridPane>
+    </center>
+</BorderPane>

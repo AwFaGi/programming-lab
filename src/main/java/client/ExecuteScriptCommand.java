@@ -17,7 +17,7 @@ public class ExecuteScriptCommand extends AbstractCmd {
         super(
                 "execute_script",
                 "execute_script file_name",
-                "add element to the collection, filling fields using newline",
+                "run user script containing commands",
                 new String[]{"String"}
         );
 

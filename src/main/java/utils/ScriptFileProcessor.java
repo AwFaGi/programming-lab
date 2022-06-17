@@ -5,6 +5,7 @@ import exceptions.CommandExecutionException;
 import exceptions.InScriptException;
 import exceptions.ServerUnavailableException;
 import exceptions.UnacceptableUserInputException;
+import gui.ClientGUI;
 import stored.City;
 import stored.Climate;
 import stored.Coordinates;
@@ -31,6 +32,42 @@ public class ScriptFileProcessor {
         sc = new Scanner(fr);
         cm = new ClientCmdManager(true, this);
         ManagerFiller.fillCommandManager(cm);
+    }
+
+    public ScriptFileProcessor(FileReader fr, boolean smth){
+        sc = new Scanner(fr);
+        cm = new ClientCmdManager(true, this);
+        ManagerFiller.fillCommandManager(cm, ClientGUI.getInstance().getCommands());
+    }
+
+    public void execute_gui(){
+        try (DatagramChannel channel = DatagramChannel.open();) {
+
+            channel.bind(null);
+            channel.configureBlocking(false);
+            ByteBuffer fromBuffer = ByteBuffer.allocate(1024 * 8);
+            while (sc.hasNext()) {
+                String cmd = sc.nextLine();
+                try {
+                    CmdTemplate command = cm.processCommand(cmd);
+//                    command.updateAuth(ClientGUI.getInstance().HKEY_Current_user(), ClientGUI.getInstance().HKEY_Local_machine());
+                    ClientGUI.getInstance().sendRequests(command);
+
+                } catch (CommandExecutionException e) {
+                    System.err.println(e.getMessage());
+                    throw new InScriptException(String.format("failed execute '%s'", cmd));
+                }
+            }
+        }catch (ServerUnavailableException e){
+            throw new InScriptException(String.format("failed execute due to '%s'", e));
+        }
+        catch (java.io.EOFException e){
+            throw new InScriptException(String.format("failed execute due to '%s'", "Buffer overflow!"));
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void execute(){
