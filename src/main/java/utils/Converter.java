@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Converter {
     public static <T> ByteBuffer convertToBB(T something) {
-        ByteBuffer buffer = ByteBuffer.allocate(1024 * 8);
+        ByteBuffer buffer = ByteBuffer.allocate(1024 * 16);
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
              ObjectOutputStream oos = new ObjectOutputStream(baos);){
 

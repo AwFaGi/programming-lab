@@ -104,7 +104,7 @@ public class CollectionManager {
             Field stringListField = CollectionManager.class.getDeclaredField("collection");
             ParameterizedType stringListType = (ParameterizedType) stringListField.getGenericType();
             Class<?> stringListClass = (Class<?>) stringListType.getActualTypeArguments()[0];
-
+            syncWithDB();
             return "Collection: " + collection.getClass().toString() + "\n" +
                     "Element: " + stringListClass.toString() + "\n" +
                     String.format("Size: %d", collection.size()) + "\n" +
@@ -179,6 +179,7 @@ public class CollectionManager {
      * @return treeset of elements
      */
     public synchronized TreeSet<City> getCollection(){
+        syncWithDB();
         return (TreeSet<City>) collection.clone();
     }
 

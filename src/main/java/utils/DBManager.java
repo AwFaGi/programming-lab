@@ -50,6 +50,7 @@ public class DBManager {
             LOGGER.info("Database's been initialized!");
         }catch (SQLException e){
             LOGGER.fatal("Sql error");
+            e.printStackTrace();
             System.exit(-1);
         }
 
@@ -237,6 +238,7 @@ public class DBManager {
                 elem.setPopulation(resultSet.getLong("population"));
                 elem.setMetersAboveSeaLevel(resultSet.getFloat("meters_above_sea_level"));
                 elem.setTimezone(resultSet.getInt("timezone"));
+                elem.setAgglomeration(resultSet.getLong("agglomeration"));
                 String climate = resultSet.getString("climate");
                 if (resultSet.wasNull()){
                     elem.setClimate(null);
@@ -264,6 +266,7 @@ public class DBManager {
             }
 
         }catch (SQLException e){
+            e.printStackTrace();
             LOGGER.error(e.getMessage());
         }
         return result;

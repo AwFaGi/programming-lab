@@ -31,6 +31,15 @@ public class CmdTemplate implements Serializable, ArgsDependency {
         return password;
     }
 
+    public CmdTemplate(String name){
+        this.name = name;
+        this.usage = null;
+        this.description = null;
+        this.requirements = null;
+        this.username = null;
+        this.password = null;
+    }
+
     public CmdTemplate(String name, String username, String password){
         this.name = name;
         this.usage = null;

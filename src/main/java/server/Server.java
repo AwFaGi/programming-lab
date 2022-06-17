@@ -3,6 +3,7 @@ import commands.AbstractCmd;
 import exceptions.CommandExecutionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import stored.City;
 import transfer.CmdTemplate;
 import transfer.Responce;
 import utils.CollectionManager;
@@ -16,7 +17,10 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
+import java.util.TreeSet;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
@@ -24,8 +28,8 @@ import java.util.stream.Collectors;
  * class for server running: work with collection
  */
 public class Server{
-    public final static int SERVICE_PORT = 50505;
-    public final static SocketAddress sockaddr = new InetSocketAddress("localhost", SERVICE_PORT);
+    private static int SERVICE_PORT;
+    private static SocketAddress sockaddr;
     private static final Logger LOGGER = LogManager.getLogger(Server.class);
 
     private static final ExecutorService cachedPool = Executors.newCachedThreadPool();
@@ -39,6 +43,14 @@ public class Server{
     public static void main(String[] args) throws IOException{
         
         LOGGER.info("Initialize");
+
+        String potentialPort = System.getenv("LAB_PORT");
+        try{
+            SERVICE_PORT = Integer.parseInt(potentialPort);
+        } catch (Exception ignored){
+            SERVICE_PORT = 50505;
+        }
+        sockaddr  = new InetSocketAddress("localhost", SERVICE_PORT);
 
         cm = new ServerCmdManager();
         ManagerFiller.fillCommandManager(cm);
@@ -82,13 +94,16 @@ public class Server{
                 Runnable task = () -> listen(channel, ByteBuffer.allocate(1024*4));
                 cachedPool.submit(task);
                 Thread.sleep(100);
+
+
             }
 
         }
         catch (SocketException e){
             LOGGER.error(e);
 //            e.printStackTrace();
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -102,6 +117,7 @@ public class Server{
             }
         }catch (IOException e){
             LOGGER.error(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -120,6 +136,12 @@ public class Server{
                                     .map(AbstractCmd::getTemplate)
                                     .collect(Collectors.toList()));
                     break;
+                case "requestObjects":
+                    CollectionManager.getInstance().syncWithDB();
+                    ArrayList<City> toSend = new ArrayList<>(CollectionManager.getInstance().getCollection());
+                    res = new Responce(false, "Your objects", null,
+                            toSend);
+                    break;
                 case "login":
                 case "register":
                     res = processAuth(c1);
@@ -135,6 +157,7 @@ public class Server{
         } catch (CommandExecutionException |IOException | ClassNotFoundException e) {
             res = new Responce(true, e.getMessage(), null);
             LOGGER.error(e.getMessage());
+            e.printStackTrace();
         }
         Responce finalRes = res;
         Runnable task = () -> sendAnswer(finalRes, adr, channel);
