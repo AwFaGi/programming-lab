@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
@@ -191,6 +192,8 @@ public class MainView implements Initializable {
 
         });
 
+        updateGraph();
+
         currentUser.setText(currentUser.getText() + " " + ClientGUI.getInstance().HKEY_Current_user());
 
         ArrayList<CmdTemplate> list = ClientGUI.getInstance().getCommands();
@@ -332,8 +335,11 @@ public class MainView implements Initializable {
             }
             circle.relocate(400+elem.getCoordinates().getX(), 300+elem.getCoordinates().getY());
             circle.setOnMouseClicked(event -> {
+                Paint old = circle.getFill();
+                circle.setFill(Color.RED);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, elem.toString(), ButtonType.OK);
                 alert.showAndWait();
+                circle.setFill(old);
             });
             pane.getChildren().add(circle);
         }
