@@ -47,6 +47,11 @@ public class WelcomeController implements Initializable {
 
     @FXML
     void doRegister(ActionEvent event) {
+        if (regLogin.getText().isEmpty() || regPassword.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR, res.getString("registration_failed"), ButtonType.OK);
+            alert.showAndWait();
+            return;
+        }
         CmdTemplate cmdTemplate = new CmdTemplate("register", regLogin.getText(), regPassword.getText());
         boolean loggedIn = ClientGUI.getInstance().sendAuthRequest(cmdTemplate);
         if (loggedIn){
@@ -59,6 +64,11 @@ public class WelcomeController implements Initializable {
 
     @FXML
     void doSignin(ActionEvent event) {
+        if (signinLogin.getText().isEmpty() || signinPassword.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR, res.getString("authorisation_failed"), ButtonType.OK);
+            alert.showAndWait();
+            return;
+        }
         CmdTemplate cmdTemplate = new CmdTemplate("login", signinLogin.getText(), signinPassword.getText());
         boolean loggedIn = ClientGUI.getInstance().sendAuthRequest(cmdTemplate);
         if (loggedIn){
